@@ -14,7 +14,6 @@
         android:layout_marginLeft="@dimen/_20sdp"
         android:layout_gravity="center_vertical"
         android:padding="@dimen/_13sdp"
-        android:fontFamily="@font/ubuntu_medium"
         android:text="Incomplete"
         android:textColor="@color/white"
         android:textSize="@dimen/_13ssp"

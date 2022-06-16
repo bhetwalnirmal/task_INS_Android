@@ -34,7 +34,7 @@
             android:textAlignment="center"
             android:textSize="@dimen/_50ssp"
             android:id="@+id/tv_time"
-            android:fontFamily="@font/ubuntu_medium"/>
+            />
 
 
     </LinearLayout>
@@ -71,7 +71,6 @@
         android:textSize="@dimen/_30ssp"
         android:paddingTop="@dimen/_20sdp"
         android:paddingBottom="@dimen/_20sdp"
-        android:fontFamily="@font/ubuntu_medium"
         android:textColor="@color/teal_700"
         android:id="@+id/textDismiss"
         app:layout_constraintBottom_toBottomOf="parent"
