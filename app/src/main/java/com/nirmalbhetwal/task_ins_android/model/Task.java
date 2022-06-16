@@ -7,13 +7,12 @@ import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
 
-@Entity(tableName = "taskTable")
-
+@Entity(tableName = ("task"))
 public class Task implements Serializable {
     @PrimaryKey(autoGenerate = true)
     private int id;
 
-    @ColumnInfo(name= "title")
+    @ColumnInfo(name = "title")
     private String title;
 
     @ColumnInfo(name = "create_date_time")
@@ -31,9 +30,6 @@ public class Task implements Serializable {
     @ColumnInfo(name = "image_path")
     private String imagePath;
 
-//    @ColumnInfo(name = "image_list")
-//    private ArrayList<String> image;
-
     @ColumnInfo(name = "color")
     private String color;
 
@@ -45,6 +41,7 @@ public class Task implements Serializable {
 
     @ColumnInfo(name = "completed")
     private String completed;
+
 
     public int getId() {
         return id;
@@ -102,14 +99,6 @@ public class Task implements Serializable {
         this.imagePath = imagePath;
     }
 
-//    public ArrayList<String> getImage() {
-//        return image;
-//    }
-//
-//    public void setImage(ArrayList<String> image) {
-//        this.image = image;
-//    }
-
     public String getColor() {
         return color;
     }
@@ -142,9 +131,4 @@ public class Task implements Serializable {
         this.completed = completed;
     }
 
-    @NonNull
-    @Override
-    public String toString() {
-        return title + " : " + createDateTime;
-    }
 }
