@@ -208,5 +208,6 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
+    <include layout="@layout/layout_bottombar" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

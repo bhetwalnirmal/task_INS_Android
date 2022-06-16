@@ -1,6 +1,5 @@
 package com.nirmalbhetwal.task_ins_android;
 
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.ContextWrapper;
@@ -54,6 +53,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
+
 
 public class CreateTaskActivity extends AppCompatActivity {
 
@@ -383,8 +383,6 @@ public class CreateTaskActivity extends AppCompatActivity {
         }
     }
 
-
-
     private void requestRecordingPermission(){
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, REQUEST_AUDIO_PERMISSION);
     }
@@ -491,6 +489,7 @@ public class CreateTaskActivity extends AppCompatActivity {
         }
         dialogAudioRecord.show();
     }
+
 
 
     private void showDeleteDialog() {
