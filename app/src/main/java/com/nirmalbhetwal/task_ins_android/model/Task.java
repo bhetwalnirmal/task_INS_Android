@@ -1,77 +1,150 @@
 package com.nirmalbhetwal.task_ins_android.model;
 
-public class Task {
-    private int taskId;
-    private int categoryId;
-    private String taskName;
-    private String taskStatus;
-    private String createdDate;
-    private String taskColor;
-    private String taskPriority;
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
-    public Task(int taskId, int categoryId, String taskName, String taskStatus, String createdDate, String taskColor, String taskPriority) {
-        this.taskId = taskId;
-        this.categoryId = categoryId;
-        this.taskName = taskName;
-        this.taskStatus = taskStatus;
-        this.createdDate = createdDate;
-        this.taskColor = taskColor;
-        this.taskPriority = taskPriority;
+import java.io.Serializable;
+
+@Entity(tableName = "taskTable")
+
+public class Task implements Serializable {
+    @PrimaryKey(autoGenerate = true)
+    private int id;
+
+    @ColumnInfo(name= "title")
+    private String title;
+
+    @ColumnInfo(name = "create_date_time")
+    private String createDateTime;
+
+    @ColumnInfo(name = "set_date_time")
+    private String setDateTime;
+
+    @ColumnInfo(name = "category")
+    private String category;
+
+    @ColumnInfo(name = "task_text")
+    private String taskText;
+
+    @ColumnInfo(name = "image_path")
+    private String imagePath;
+
+//    @ColumnInfo(name = "image_list")
+//    private ArrayList<String> image;
+
+    @ColumnInfo(name = "color")
+    private String color;
+
+    @ColumnInfo(name = "audio_path")
+    private String audioPath;
+
+    @ColumnInfo(name = "web_link")
+    private String webLink;
+
+    @ColumnInfo(name = "completed")
+    private String completed;
+
+    public int getId() {
+        return id;
     }
 
-    public int getTaskId() {
-        return taskId;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public void setTaskId(int taskId) {
-        this.taskId = taskId;
+    public String getTitle() {
+        return title;
     }
 
-    public int getCategoryId() {
-        return categoryId;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public void setCategoryId(int categoryId) {
-        this.categoryId = categoryId;
+    public String getCreateDateTime() {
+        return createDateTime;
     }
 
-    public String getTaskName() {
-        return taskName;
+    public void setCreateDateTime(String createDateTime) {
+        this.createDateTime = createDateTime;
     }
 
-    public void setTaskName(String taskName) {
-        this.taskName = taskName;
+    public String getSetDateTime() {
+        return setDateTime;
     }
 
-    public String getTaskStatus() {
-        return taskStatus;
+    public void setSetDateTime(String setDateTime) {
+        this.setDateTime = setDateTime;
     }
 
-    public void setTaskStatus(String taskStatus) {
-        this.taskStatus = taskStatus;
+    public String getCategory() {
+        return category;
     }
 
-    public String getCreatedDate() {
-        return createdDate;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
-    public void setCreatedDate(String createdDate) {
-        this.createdDate = createdDate;
+    public String getTaskText() {
+        return taskText;
     }
 
-    public String getTaskColor() {
-        return taskColor;
+    public void setTaskText(String taskText) {
+        this.taskText = taskText;
     }
 
-    public void setTaskColor(String taskColor) {
-        this.taskColor = taskColor;
+    public String getImagePath() {
+        return imagePath;
     }
 
-    public String getTaskPriority() {
-        return taskPriority;
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 
-    public void setTaskPriority(String taskPriority) {
-        this.taskPriority = taskPriority;
+//    public ArrayList<String> getImage() {
+//        return image;
+//    }
+//
+//    public void setImage(ArrayList<String> image) {
+//        this.image = image;
+//    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public String getAudioPath() {
+        return audioPath;
+    }
+
+    public void setAudioPath(String audioPath) {
+        this.audioPath = audioPath;
+    }
+
+    public String getWebLink() {
+        return webLink;
+    }
+
+    public void setWebLink(String webLink) {
+        this.webLink = webLink;
+    }
+
+    public String getCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(String completed) {
+        this.completed = completed;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return title + " : " + createDateTime;
     }
 }
