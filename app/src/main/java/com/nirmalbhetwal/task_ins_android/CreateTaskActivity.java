@@ -175,8 +175,6 @@ public class CreateTaskActivity extends AppCompatActivity {
             }
         }
 
-
-
         initMore();
         setCategoryIndicatorColor();
     }
