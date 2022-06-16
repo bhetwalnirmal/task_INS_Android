@@ -177,7 +177,7 @@ public class CreateTaskActivity extends AppCompatActivity {
 
 
 
-        
+        initMore();
         setCategoryIndicatorColor();
     }
 
@@ -281,6 +281,110 @@ public class CreateTaskActivity extends AppCompatActivity {
         new SaveTask().execute();
     }
 
+    private void initMore() {
+        final LinearLayout layoutMore = findViewById(R.id.layoutBottomBar);
+        final BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(layoutMore);
+
+        layoutMore.findViewById(R.id.textMore).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                } else {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                }
+
+            }
+        });
+
+        final ImageView imagePriorityLow = layoutMore.findViewById(R.id.imagePriorityLow);
+        final ImageView imagePriorityMedium = layoutMore.findViewById(R.id.imagePriorityMedium);
+        final ImageView imagePriorityHigh = layoutMore.findViewById(R.id.imagePriorityHigh);
+
+        layoutMore.findViewById(R.id.viewColorLow).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectedTaskColor = "#FF018786";
+                imagePriorityLow.setImageResource(R.drawable.ic_done);
+                imagePriorityMedium.setImageResource(0);
+                imagePriorityHigh.setImageResource(0);
+                setCategoryIndicatorColor();
+            }
+        });
+        layoutMore.findViewById(R.id.viewColorMedium).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectedTaskColor = "#FDBE3B";
+                imagePriorityLow.setImageResource(0);
+                imagePriorityMedium.setImageResource(R.drawable.ic_done);
+                imagePriorityHigh.setImageResource(0);
+                setCategoryIndicatorColor();
+            }
+        });
+        layoutMore.findViewById(R.id.viewColorHigh).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectedTaskColor = "#FF4842";
+                imagePriorityLow.setImageResource(0);
+                imagePriorityMedium.setImageResource(0);
+                imagePriorityHigh.setImageResource(R.drawable.ic_done);
+                setCategoryIndicatorColor();
+            }
+        });
+
+        if (alreadyAvailableTableTask != null && alreadyAvailableTableTask.getColor() != null && !alreadyAvailableTableTask.getColor().trim().isEmpty()) {
+            switch (alreadyAvailableTableTask.getColor()) {
+                case "#FF018786":
+                    layoutMore.findViewById(R.id.viewColorLow).performClick();
+                    break;
+                case "#FDBE3B":
+                    layoutMore.findViewById(R.id.viewColorMedium).performClick();
+                    break;
+                case "#FF4842":
+                    layoutMore.findViewById(R.id.viewColorHigh).performClick();
+                    break;
+            }
+        }
+
+        layoutMore.findViewById(R.id.layoutAddImage).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                if (ContextCompat.checkSelfPermission(
+                        getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE
+                ) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(
+                            CreateTaskActivity.this,
+                            new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                            REQUEST_CODE_STORAGE_PERMISSION
+                    );
+                } else {
+                    selectImage();
+                }
+            }
+        });
+        layoutMore.findViewById(R.id.layoutAudioRecord).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                showAudioDialog();
+            }
+        });
+
+        if (alreadyAvailableTableTask != null) {
+            layoutMore.findViewById(R.id.layoutDeleteTask).setVisibility(View.VISIBLE);
+            layoutMore.findViewById(R.id.layoutDeleteTask).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                    showDeleteDialog();
+                }
+            });
+
+
+        }
+    }
+
 
 
     private void requestRecordingPermission(){
@@ -295,9 +399,100 @@ public class CreateTaskActivity extends AppCompatActivity {
         return true;
     }
 
+    private String getRecordingFilePath()
+    {
+        ContextWrapper contextWrapper = new ContextWrapper(getApplicationContext());
+        File music = contextWrapper.getExternalFilesDir(Environment.DIRECTORY_MUSIC);
+        File file = new File (music, "testFile" + ".mp3");
+        return file.getPath();
+    }
 
+    private void showAudioDialog(){
+        if (dialogAudioRecord == null){
+            AlertDialog.Builder builder = new AlertDialog.Builder(CreateTaskActivity.this);
+            View view = LayoutInflater.from(this).inflate(
+                    R.layout.layout_audio_dialoug,
+                    (ViewGroup) findViewById(R.id.layoutAudioContainer)
+            );
+            builder.setView(view);
+            dialogAudioRecord = builder.create();
+            if (dialogAudioRecord.getWindow() != null) {
+                dialogAudioRecord.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+            }
+            view.findViewById(R.id.audioRecord).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!isRecording){
+                        isRecording = true;
+                        mediaRecorder = new MediaRecorder();
+                        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+                        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+                        mediaRecorder.setOutputFile(getRecordingFilePath());
+                        audioFilePath = getRecordingFilePath();
+                        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
 
+                        try {
+                            mediaRecorder.prepare();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
 
+                        mediaRecorder.start();
+                    }
+                    else {
+                        mediaRecorder.stop();
+                        mediaRecorder.release();
+                        mediaRecorder=null;
+                    }
+                }
+            });
+            view.findViewById(R.id.audioPlay).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if (!isPlaving){
+                        if (audioFilePath!=null)
+                        {
+                            try {
+                                mediaPlayer.setDataSource(getRecordingFilePath());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        else {
+
+                            Toast.makeText(getApplicationContext(), "No Recording", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        try {
+                            mediaPlayer.prepare();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                        mediaPlayer.start();
+                        isPlaving = true;
+                    }
+
+                    else {
+                        mediaPlayer.stop();
+                        mediaPlayer.release();
+                        //  mediaPlayer = null;
+                        // mediaPlayer = new MediaPlayer();
+                        isPlaving = false;
+                    }
+
+                }
+            });
+            view.findViewById(R.id.textDismiss).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialogAudioRecord.dismiss();
+                }
+            });
+        }
+        dialogAudioRecord.show();
+    }
 
 
     private void showDeleteDialog() {
