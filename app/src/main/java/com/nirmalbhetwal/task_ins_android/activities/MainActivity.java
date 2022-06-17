@@ -106,9 +106,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             protected List<TableTask> doInBackground(Void... voids) {
-                 /*return TaskDatabase
-                         .getDatabase(getApplicationContext())
-                         .taskDao().getAllTasks(); */
 
                 return TableTaskDB
                         .getDatabase(getApplicationContext())
@@ -119,16 +116,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             protected void onPostExecute(List<TableTask> tableTasks){
                 super.onPostExecute(tableTasks);
-                 /*if (taskList.size()==0) {
-                    taskList.addAll(tasks);
-                    tasksAdapter.notifyDataSetChanged();
-                }
-                else {
-                    taskList.add(0,tasks.get(0));
-                    tasksAdapter.notifyItemInserted(0);
-                }
-                tasksRecyclerView.smoothScrollToPosition(0);
-                // Scrolling the recyclerview to the top */
 
                 if (requestCode == REQUEST_CODE_SHOW_TASKS){
                     tableTasksList.clear();
