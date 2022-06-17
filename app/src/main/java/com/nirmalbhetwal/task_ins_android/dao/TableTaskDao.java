@@ -5,19 +5,21 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
-import com.nirmalbhetwal.task_ins_android.entities.TaskTable;
+
+
+import com.nirmalbhetwal.task_ins_android.entities.TableTask;
 
 import java.util.List;
 
 @Dao
-public interface TaskTableDao {
+public interface TableTaskDao {
 
-    @Query("SELECT * FROM tasks")
-    List<TaskTable> getAllTableTask();
+    @Query("SELECT * FROM tableTask")
+    List<TableTask> getAllTableTask();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertTableTask (TaskTable tableTask);
+    void insertTableTask (TableTask tableTask);
 
     @Delete
-    void deleteTask(TaskTable tableTask);
+    void deleteTask(TableTask tableTask);
 }

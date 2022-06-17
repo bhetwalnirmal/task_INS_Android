@@ -6,8 +6,8 @@ import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
 
-@Entity(tableName = ("tasks"))
-public class TaskTable implements Serializable {
+@Entity(tableName = ("tableTask"))
+public class TableTask implements Serializable {
     @PrimaryKey(autoGenerate = true)
     private int id;
 
@@ -23,8 +23,7 @@ public class TaskTable implements Serializable {
     @ColumnInfo(name = "category")
     private String category;
 
-    @ColumnInfo(name = "task_text")
-    private String taskText;
+
 
     @ColumnInfo(name = "image_path")
     private String imagePath;
@@ -82,13 +81,6 @@ public class TaskTable implements Serializable {
         this.category = category;
     }
 
-    public String getTaskText() {
-        return taskText;
-    }
-
-    public void setTaskText(String taskText) {
-        this.taskText = taskText;
-    }
 
     public String getImagePath() {
         return imagePath;
@@ -129,4 +121,6 @@ public class TaskTable implements Serializable {
     public void setCompleted(String completed) {
         this.completed = completed;
     }
+
+
 }
