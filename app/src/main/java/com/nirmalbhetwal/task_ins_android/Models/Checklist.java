@@ -26,4 +26,55 @@ public class Checklist implements Serializable {
     @Nullable
     @ColumnInfo(name = "created_date")
     private Date createdDate;
+
+    public Checklist(int id, int taskId, @NotNull String name, @Nullable Date completedDate, @Nullable Date createdDate) {
+        this.id = id;
+        this.taskId = taskId;
+        this.name = name;
+        this.completedDate = completedDate;
+        this.createdDate = createdDate;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(int taskId) {
+        this.taskId = taskId;
+    }
+
+    @NotNull
+    public String getName() {
+        return name;
+    }
+
+    public void setName(@NotNull String name) {
+        this.name = name;
+    }
+
+    @Nullable
+    public Date getCompletedDate() {
+        return completedDate;
+    }
+
+    public void setCompletedDate(@Nullable Date completedDate) {
+        this.completedDate = completedDate;
+    }
+
+    @Nullable
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(@Nullable Date createdDate) {
+        this.createdDate = createdDate;
+    }
 }

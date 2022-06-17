@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#DFF6FF"
+    android:id="@+id/clBaseLayout"
     tools:context=".CreateTaskActivity">
 
     <ScrollView

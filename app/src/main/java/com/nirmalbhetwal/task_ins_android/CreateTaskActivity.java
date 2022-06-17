@@ -2,11 +2,13 @@ package com.nirmalbhetwal.task_ins_android;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import android.content.ClipData;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -16,12 +18,21 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import java.util.ArrayList;
+import com.nirmalbhetwal.task_ins_android.Models.Task;
+import com.nirmalbhetwal.task_ins_android.abstracts.TaskDatabase;
+import com.nirmalbhetwal.task_ins_android.daos.TaskDao;
+import com.nirmalbhetwal.task_ins_android.respositories.TaskRepository;
 
-public class CreateTaskActivity extends AppCompatActivity {
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+public class CreateTaskActivity extends AppCompatActivity implements View.OnClickListener {
     private static final int RESULT_LOAD_IMAGE = 1;
     LinearLayout lllayoutAddImage;
     ImageView ivSaveTask, ivBackButton, ivLowPriority, ivMediumPriority, ivHighPriority;
+    TaskRepository taskRepository;
+    CoordinatorLayout clBaseLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +46,22 @@ public class CreateTaskActivity extends AppCompatActivity {
         ivLowPriority = (ImageView) findViewById(R.id.ivLowPriority);
         ivMediumPriority = (ImageView) findViewById(R.id.ivMediumPriority);
         ivHighPriority = (ImageView) findViewById(R.id.ivHighPriority);
+        clBaseLayout = (CoordinatorLayout) findViewById(R.id.clBaseLayout);
+
+        ivBackButton.setOnClickListener(this);
+        ivSaveTask.setOnClickListener(this);
+        ivLowPriority.setOnClickListener(this);
+        ivMediumPriority.setOnClickListener(this);
+        ivHighPriority.setOnClickListener(this);
+
+        //
+        TaskDatabase.getInstance(this).getRepository().insertTask(new Task("asdf", "sdf", 1, "ssdf", new Date()));
+
+        List<Task> tasks = TaskDatabase.getInstance(this).getRepository().getTasks();
+
+        for (Task task : tasks) {
+            Log.d("TAG_", " " + task.getName());
+        }
 
         lllayoutAddImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,5 +139,22 @@ public class CreateTaskActivity extends AppCompatActivity {
         }
 
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch(view.getId()) {
+            case R.id.ivLowPriority:
+                clBaseLayout.setBackgroundColor(Color.parseColor(Constants.colorLowPriority));
+                break;
+            case R.id.ivMediumPriority:
+                clBaseLayout.setBackgroundColor(Color.parseColor(Constants.colorMediumPriority));
+                break;
+            case R.id.ivHighPriority:
+                clBaseLayout.setBackgroundColor(Color.parseColor(Constants.colorHighPriority));
+                break;
+            default:
+                break;
+        }
     }
 }
