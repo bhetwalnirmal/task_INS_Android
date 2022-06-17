@@ -209,7 +209,7 @@ public class CreateTaskActivity  extends AppCompatActivity {
         tableTask.setTaskStatus(taskProgress);
 
         if (alreadyAvailableTableTask != null) {
-            tableTask.setId_task(alreadyAvailableTableTask.getId_task());
+            tableTask.setId(alreadyAvailableTableTask.getId());
         }
 
         // ROOM does not allow database operation on the main thread
