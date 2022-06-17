@@ -185,35 +185,53 @@
                     />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
-
-            <EditText
-                android:id="@+id/inputTaskDesc"
+            <LinearLayout
+                android:id="@+id/layoutaddsubtask"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_12sdp"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:layout_marginEnd="@dimen/_12sdp"
-                android:layout_marginBottom="@dimen/_15sdp"
-                android:background="@drawable/bg_white_stroke"
-                android:fontFamily="@font/ubuntu_regular"
-                android:gravity="top"
-                android:hint="@string/this_is_where_you_fill_the_description_of_the_task"
-                android:importantForAutofill="no"
-                android:includeFontPadding="false"
-                android:inputType="textMultiLine"
-                android:minHeight="@dimen/_100sdp"
-                android:padding="8dp"
-                android:textColor="@color/white"
-                android:textColorHint="@color/colorTextHint"
-                android:textSize="@dimen/_13sdp"
-                app:layout_constraintTop_toBottomOf="@id/imageTask" />
+                android:layout_height="@dimen/_35sdp"
+                android:layout_margin="@dimen/_10sdp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                tools:ignore = "UseCompoundDrawable"
+                app:layout_constraintTop_toBottomOf="@id/inputTaskCategory"
+                >
+
+                <ImageView
+                    android:layout_width="@dimen/_22sdp"
+                    android:layout_height="@dimen/_22sdp"
+                    android:contentDescription="@string/app_name"
+                    android:src="@drawable/ic_add"
+                    app:tint="@color/colorIcons" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:fontFamily="@font/ubuntu_medium"
+                    android:includeFontPadding="false"
+                    android:text="@string/add_sub_task"
+                    android:textColor="@color/colorIcons"
+                    android:textSize="@dimen/_12ssp"
+                    />
+
+            </LinearLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/subtasksRecycleView"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_200sdp"
+                android:clipToPadding="false"
+                android:paddingStart="@dimen/_12sdp"
+                android:paddingBottom="@dimen/_12sdp"
+                tools:listitem="@layout/item_container_task"
+                app:layout_constraintTop_toBottomOf="@id/layoutaddsubtask"
+                />
 
             <LinearLayout
                 android:id="@+id/lay_create_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintTop_toBottomOf="@id/inputTaskDesc" >
+                app:layout_constraintTop_toBottomOf="@id/subtasksRecycleView" >
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_weight="1"
