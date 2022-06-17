@@ -6,6 +6,7 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
+import com.nirmalbhetwal.task_ins_android.dao.TaskTableDao;
 import com.nirmalbhetwal.task_ins_android.entities.TaskTable;
 
 @Database(entities = {TaskTable.class}, version = 1, exportSchema = false)
@@ -23,6 +24,6 @@ public abstract class TaskDatabase extends RoomDatabase {
         return taskDatabase;
     }
 
-    public abstract TableTaskDao taskDao();
+    public abstract TaskTableDao taskDao();
 
 }
