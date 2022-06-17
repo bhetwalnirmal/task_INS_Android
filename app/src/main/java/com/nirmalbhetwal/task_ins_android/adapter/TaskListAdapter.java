@@ -132,7 +132,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TableT
                 txt_task_category.setText(tableTask.getCategory());
             }
             if (tableTask.getImagePath() != null) {
-                File imgFile = new  File(tableTask.getImagePath()[0]);
+                File imgFile = new  File(tableTask.getImagePath().split(",")[0]);
                 Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
 //                byte[] bytes= Base64.decode(tableTask.getImagePath(),Base64.DEFAULT);
 //                Bitmap bitmap= BitmapFactory.decodeByteArray(bytes,0,bytes.length);

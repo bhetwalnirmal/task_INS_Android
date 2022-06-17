@@ -1,6 +1,7 @@
 package com.nirmalbhetwal.task_ins_android.entities;
 
-import static android.arch.persistence.room.ForeignKey.CASCADE;
+
+import static androidx.room.ForeignKey.CASCADE;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -24,6 +25,37 @@ public class TableSubTask implements Serializable {
     @ColumnInfo(name = "task_status")
     private Boolean taskStatus;
 
+    public int getId_subtask() {
+        return id_subtask;
+    }
+
+    public void setId_subtask(int id_subtask) {
+        this.id_subtask = id_subtask;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public Boolean getTaskStatus() {
+        return taskStatus;
+    }
+
+    public void setTaskStatus(Boolean taskStatus) {
+        this.taskStatus = taskStatus;
+    }
+
+    public int getId_fksubtask() {
+        return id_fksubtask;
+    }
+
+    public void setId_fksubtask(int id_fksubtask) {
+        this.id_fksubtask = id_fksubtask;
+    }
 
     private int id_fksubtask;
 

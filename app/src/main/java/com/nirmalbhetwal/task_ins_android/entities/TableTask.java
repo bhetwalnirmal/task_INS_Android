@@ -13,12 +13,7 @@ public class TableTask implements Serializable {
     @PrimaryKey(autoGenerate = true)
     private int id_task;
 
-    @Embedded
-    public TableSubTask tableSubTask;
-    @Relation(
-            parentColumn = "id_task",
-            entityColumn = "id_fksubtask"
-    )
+
 
     @ColumnInfo(name= "title")
     private String title;
@@ -41,11 +36,11 @@ public class TableTask implements Serializable {
     @ColumnInfo(name = "task_desc")
     private String taskDesc;
 
-    @ColumnInfo(name = "sub_task")
-    private String[] subTask;
+//    @ColumnInfo(name = "sub_task")
+//    private String[] subTask;
 
     @ColumnInfo(name = "image_path")
-    private String[] imagePath;
+    private String imagePath;
 
     @ColumnInfo(name = "audio_path")
     private String audioPath;
@@ -53,20 +48,12 @@ public class TableTask implements Serializable {
     @ColumnInfo(name = "task_status")
     private String taskStatus;
 
-    public String getTaskDesc() {
-        return taskDesc;
-    }
-
-    public void setTaskDesc(String taskDesc) {
-        this.taskDesc = taskDesc;
-    }
-
-    public int getId() {
+    public int getId_task() {
         return id_task;
     }
 
-    public void setId(int id) {
-        this.id_task = id;
+    public void setId_task(int id_task) {
+        this.id_task = id_task;
     }
 
     public String getTitle() {
@@ -117,19 +104,19 @@ public class TableTask implements Serializable {
         this.category = category;
     }
 
-    public String[] getSubTask() {
-        return subTask;
+    public String getTaskDesc() {
+        return taskDesc;
     }
 
-    public void setSubTask(String[] subTask) {
-        this.subTask = subTask;
+    public void setTaskDesc(String taskDesc) {
+        this.taskDesc = taskDesc;
     }
 
-    public String[] getImagePath() {
+    public String getImagePath() {
         return imagePath;
     }
 
-    public void setImagePath(String[] imagePath) {
+    public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
     }
 
