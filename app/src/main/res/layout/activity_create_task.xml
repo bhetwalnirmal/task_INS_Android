@@ -132,7 +132,7 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 tools:ignore = "UseCompoundDrawable"
-                app:layout_constraintTop_toBottomOf="@id/inputTaskCategory"
+                app:layout_constraintTop_toBottomOf="@id/inputTaskDesc"
                 >
 
                 <ImageView
@@ -383,6 +383,26 @@
                     />
 
             </LinearLayout>
+            <EditText
+                android:id="@+id/inputTaskDesc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_12sdp"
+                android:layout_marginBottom="@dimen/_15sdp"
+                android:background="@drawable/bg_white_stroke"
+                android:fontFamily="@font/ubuntu_regular"
+                android:gravity="top"
+                android:hint="@string/this_is_where_you_fill_the_description_of_the_task"
+                android:importantForAutofill="no"
+                android:includeFontPadding="false"
+                android:inputType="textMultiLine"
+                android:minHeight="@dimen/_100sdp"
+                android:padding="8dp"
+                android:textColorHint="@color/colorTextHint"
+                android:textSize="@dimen/_13sdp"
+                app:layout_constraintTop_toBottomOf="@id/inputTaskCategory" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 

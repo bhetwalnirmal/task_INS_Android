@@ -26,9 +26,11 @@ public class TableTask implements Serializable {
     @ColumnInfo(name = "due_time")
     private String dueTime;
 
-
     @ColumnInfo(name = "category")
     private String category;
+
+    @ColumnInfo(name = "task_desc")
+    private String taskDesc;
 
     @ColumnInfo(name = "sub_task")
     private String[] subTask;
@@ -41,6 +43,14 @@ public class TableTask implements Serializable {
 
     @ColumnInfo(name = "task_status")
     private String taskStatus;
+
+    public String getTaskDesc() {
+        return taskDesc;
+    }
+
+    public void setTaskDesc(String taskDesc) {
+        this.taskDesc = taskDesc;
+    }
 
     public int getId() {
         return id;
