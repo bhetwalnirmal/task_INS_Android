@@ -5,6 +5,7 @@ import static androidx.room.ForeignKey.CASCADE;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.room.Relation;
 
@@ -36,12 +37,25 @@ public class Task implements Serializable {
     @ColumnInfo(name = "completed_date")
     private Date completedDate;
 
+    public static final int LOW_PRIORITY = 1;
+    public static final int MEDIUM_PRIORITY = 2;
+    public static final int HIGH_PRIORITY = 3;
+
     public Task(@NotNull String name, @NotNull String category, int priority, @Nullable String audioName, @Nullable Date completedDate) {
         this.name = name;
         this.category = category;
         this.priority = priority;
         this.audioName = audioName;
         this.completedDate = completedDate;
+    }
+
+    @Ignore
+    public Task() {
+        this.name = "";
+        this.category = "";
+        this.priority = MEDIUM_PRIORITY;
+        this.audioName = "";
+        this.completedDate = null;
     }
 
     @NotNull

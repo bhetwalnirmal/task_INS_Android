@@ -19,7 +19,7 @@ public interface TaskDao {
     List<Task> getTasks();
 
     @Insert
-    void insertTask(Task task);
+    long insertTask(Task task);
 
     @Update
     void updateTask(Task task);
