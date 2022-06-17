@@ -133,7 +133,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TableT
             }
             if (tableTask.getImagePath() != null) {
                 File imgFile = new  File(tableTask.getImagePath()[0]);
-                Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath())
+                Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
 //                byte[] bytes= Base64.decode(tableTask.getImagePath(),Base64.DEFAULT);
 //                Bitmap bitmap= BitmapFactory.decodeByteArray(bytes,0,bytes.length);
                 task_img.setImageBitmap(myBitmap);
