@@ -44,6 +44,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TableT
         tableTaskssource = tablesTasks;
     }
 
+
     @NonNull
     @Override
     public TableTaskViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -54,11 +55,6 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TableT
                         false
                 )
         );
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull TableTaskAdapters.TableTaskViewHolder holder, int position) {
-
     }
 
     @Override
