@@ -492,6 +492,7 @@ public class CreateTaskActivity  extends AppCompatActivity {
             if (data != null) {
                 Uri selectedImageUri = data.getData();
                 if (selectedImageUri != null) {
+                    // TODO: 17/06/2022 Handle multiple image selected 
                     try {
                         InputStream inputStream = getContentResolver().openInputStream(selectedImageUri);
                         Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
