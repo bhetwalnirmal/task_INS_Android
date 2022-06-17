@@ -456,7 +456,7 @@ public class CreateTaskActivity  extends AppCompatActivity {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), REQUEST_CODE_SELECT_IMAGE);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), 3);
     }
 
     @Override
