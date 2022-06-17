@@ -53,6 +53,11 @@ public class TaskListAdapter extends RecyclerView.Adapter<TableTaskAdapters.Tabl
     }
 
     @Override
+    public void onBindViewHolder(@NonNull TableTaskAdapters.TableTaskViewHolder holder, int position) {
+
+    }
+
+    @Override
     public void onBindViewHolder(@NonNull TableTaskViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.setTableTask(tablesTasks.get(position));
         holder.layoutTask.setOnClickListener(new View.OnClickListener() {

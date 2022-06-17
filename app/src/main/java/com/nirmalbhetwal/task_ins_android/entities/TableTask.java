@@ -1,15 +1,24 @@
 package com.nirmalbhetwal.task_ins_android.entities;
 
 import androidx.room.ColumnInfo;
+import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.room.Relation;
 
 import java.io.Serializable;
 
 @Entity(tableName = ("tableTask"))
 public class TableTask implements Serializable {
     @PrimaryKey(autoGenerate = true)
-    private int id;
+    private int id_task;
+
+    @Embedded
+    public TableSubTask tableSubTask;
+    @Relation(
+            parentColumn = "id_task",
+            entityColumn = "id_fksubtask"
+    )
 
     @ColumnInfo(name= "title")
     private String title;
@@ -43,11 +52,11 @@ public class TableTask implements Serializable {
     private String taskStatus;
 
     public int getId() {
-        return id;
+        return id_task;
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.id_task = id;
     }
 
     public String getTitle() {
