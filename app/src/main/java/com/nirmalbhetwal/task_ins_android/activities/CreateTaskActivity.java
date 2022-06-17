@@ -312,28 +312,40 @@ public class CreateTaskActivity  extends AppCompatActivity {
             view.findViewById(R.id.audioRecord).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (!isRecording){
-                        isRecording = true;
-                        mediaRecorder = new MediaRecorder();
-                        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-                        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-                        mediaRecorder.setOutputFile(getRecordingFilePath());
-                        audioFilePath = getRecordingFilePath();
-                        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
 
-                        try {
-                            mediaRecorder.prepare();
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                    if (ContextCompat.checkSelfPermission(
+                            getApplicationContext(), Manifest.permission.RECORD_AUDIO
+                    ) != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions(
+                                CreateTaskActivity.this,
+                                new String[]{Manifest.permission.RECORD_AUDIO},
+                                REQUEST_CODE_STORAGE_PERMISSION
+                        );
+
+                    } else {
+                        if (!isRecording){
+                            isRecording = true;
+                            mediaRecorder = new MediaRecorder();
+                            mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+                            mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+                            mediaRecorder.setOutputFile(getRecordingFilePath());
+                            audioFilePath = getRecordingFilePath();
+                            mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+                            try {
+                                mediaRecorder.prepare();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            mediaRecorder.start();
+                        }
+                        else {
+                            mediaRecorder.stop();
+                            mediaRecorder.release();
+                            mediaRecorder=null;
                         }
 
-                        mediaRecorder.start();
                     }
-                    else {
-                        mediaRecorder.stop();
-                        mediaRecorder.release();
-                        mediaRecorder=null;
-                    }
+
                 }
             });
             view.findViewById(R.id.audioPlay).setOnClickListener(new View.OnClickListener() {
