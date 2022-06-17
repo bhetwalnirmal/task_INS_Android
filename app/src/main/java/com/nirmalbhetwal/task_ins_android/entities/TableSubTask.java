@@ -26,4 +26,5 @@ public class TableSubTask implements Serializable {
 
 
     private int id_fksubtask;
+
 }
