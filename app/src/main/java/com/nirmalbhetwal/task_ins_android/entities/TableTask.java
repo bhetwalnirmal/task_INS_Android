@@ -36,7 +36,7 @@ public class TableTask implements Serializable {
     private String[] subTask;
 
     @ColumnInfo(name = "image_path")
-    private String[] imagePath;
+    private byte[] imagePath;
 
     @ColumnInfo(name = "audio_path")
     private String audioPath;
@@ -116,11 +116,11 @@ public class TableTask implements Serializable {
         this.subTask = subTask;
     }
 
-    public String[] getImagePath() {
+    public byte[] getImagePath() {
         return imagePath;
     }
 
-    public void setImagePath(String[] imagePath) {
+    public void setImagePath(byte[] imagePath) {
         this.imagePath = imagePath;
     }
 
