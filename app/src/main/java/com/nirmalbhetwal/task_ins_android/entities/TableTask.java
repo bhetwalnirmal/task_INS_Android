@@ -18,6 +18,9 @@ public class TableTask implements Serializable {
     @ColumnInfo(name= "title")
     private String title;
 
+    @ColumnInfo(name = "task_text")
+    private String taskText;
+
     @ColumnInfo(name = "create_date")
     private String createDate;
 
@@ -63,6 +66,14 @@ public class TableTask implements Serializable {
         this.title = title;
     }
 
+    public String getTaskText() {
+        return taskText;
+    }
+
+    public void setTaskText(String taskText) {
+        this.taskText = taskText;
+    }
+
     public String getCreateDate() {
         return createDate;
     }
@@ -78,7 +89,6 @@ public class TableTask implements Serializable {
     public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
-
 
     public String getDueDate() {
         return dueDate;
