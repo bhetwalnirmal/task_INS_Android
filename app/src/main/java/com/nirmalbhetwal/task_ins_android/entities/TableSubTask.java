@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
 
-@Entity(tableName = ("tableTask"), foreignKeys = @ForeignKey (entity = TableTask.class,
+@Entity(tableName = ("tableSubTask"), foreignKeys = @ForeignKey (entity = TableTask.class,
         parentColumns = "id_task",
         childColumns = "id_fksubtask",
         onDelete = CASCADE
