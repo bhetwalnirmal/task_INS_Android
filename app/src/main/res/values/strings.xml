@@ -16,4 +16,5 @@
     <string name="cancel">CANCEL</string>
     <string name="update_your_task">Update your task</string>
     <string name="is_your_task_complete">Is your task complete?</string>
+    <string name="action_settings">Setting</string>
 </resources>
