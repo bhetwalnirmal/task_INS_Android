@@ -23,6 +23,7 @@ import com.nirmalbhetwal.task_ins_android.Listener.TableTaskListeners;
 import com.nirmalbhetwal.task_ins_android.R;
 import com.nirmalbhetwal.task_ins_android.entities.TableTask;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -131,9 +132,11 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TableT
                 txt_task_category.setText(tableTask.getCategory());
             }
             if (tableTask.getImagePath() != null) {
-                byte[] bytes= Base64.decode(tableTask.getImagePath(),Base64.DEFAULT);
-                Bitmap bitmap= BitmapFactory.decodeByteArray(bytes,0,bytes.length);
-                task_img.setImageBitmap(bitmap);
+                File imgFile = new  File(tableTask.getImagePath()[0]);
+                Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+//                byte[] bytes= Base64.decode(tableTask.getImagePath(),Base64.DEFAULT);
+//                Bitmap bitmap= BitmapFactory.decodeByteArray(bytes,0,bytes.length);
+                task_img.setImageBitmap(myBitmap);
                 //imageTableTask.setImageBitmap(BitmapFactory.decodeFile(tableTask.getImagePath()));
                 task_img.setVisibility(View.VISIBLE);
             }
