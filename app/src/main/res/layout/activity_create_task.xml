@@ -103,18 +103,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/inputTaskCategory" />
 
-            <ImageView
-                android:id="@+id/imageTask"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_12sdp"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:layout_marginEnd="@dimen/_12sdp"
-                android:adjustViewBounds="true"
-                android:contentDescription="@string/app_name"
-                android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@id/inputTaskCategory" />
-
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:id="@+id/layoutDelete"
                 android:layout_width="wrap_content"
@@ -124,9 +112,8 @@
                 android:layout_marginEnd="@dimen/_12sdp"
                 android:gravity="center_horizontal"
                 android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@id/imageTask"
+                app:layout_constraintTop_toBottomOf="@id/imglayout"
                 tools:ignore="MissingConstraints">
-
                 <ImageView
                     android:id="@+id/imageDelete"
                     android:layout_width="@dimen/_20sdp"
@@ -134,7 +121,6 @@
                     android:background="@drawable/background_delete"
                     android:contentDescription="@string/app_name"
                     android:src="@color/colorDefaultTaskColor"
-
                     />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
@@ -296,6 +282,35 @@
 
             </LinearLayout>
             <LinearLayout
+                android:id="@+id/imglayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/layoutAddImage">
+                <ImageView
+                    android:id="@+id/imageTask1"
+                    android:layout_width="@dimen/_100sdp"
+                    android:layout_height="@dimen/_100sdp"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/app_name"
+                    />
+                <ImageView
+                    android:id="@+id/imageTask2"
+                    android:layout_width="@dimen/_100sdp"
+                    android:layout_height="@dimen/_100sdp"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/app_name"
+                    />
+                <ImageView
+                    android:id="@+id/imageTask3"
+                    android:layout_width="@dimen/_100sdp"
+                    android:layout_height="@dimen/_100sdp"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/app_name"
+                    />
+            </LinearLayout>
+            <LinearLayout
                 android:id="@+id/layoutAudioRecord"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_35sdp"
@@ -303,7 +318,7 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 tools:ignore = "UseCompoundDrawable"
-                app:layout_constraintTop_toBottomOf="@id/layoutAddImage"
+                app:layout_constraintTop_toBottomOf="@id/imglayout"
                 >
 
                 <ImageView
@@ -370,7 +385,6 @@
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
-
 
     <LinearLayout
         android:id="@+id/layoutBottomBar"
