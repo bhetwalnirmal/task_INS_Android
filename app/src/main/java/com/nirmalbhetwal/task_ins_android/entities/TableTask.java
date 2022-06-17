@@ -11,12 +11,15 @@ import java.io.Serializable;
 @Entity(tableName = ("tableTask"))
 public class TableTask implements Serializable {
     @PrimaryKey(autoGenerate = true)
-    private int id_task;
+    private int id;
 
 
 
     @ColumnInfo(name= "title")
     private String title;
+
+    @ColumnInfo(name = "task_text")
+    private String taskText;
 
     @ColumnInfo(name = "create_date")
     private String createDate;
@@ -36,8 +39,7 @@ public class TableTask implements Serializable {
     @ColumnInfo(name = "task_desc")
     private String taskDesc;
 
-//    @ColumnInfo(name = "sub_task")
-//    private String[] subTask;
+
 
     @ColumnInfo(name = "image_path")
     private String imagePath;
@@ -48,12 +50,12 @@ public class TableTask implements Serializable {
     @ColumnInfo(name = "task_status")
     private String taskStatus;
 
-    public int getId_task() {
-        return id_task;
+    public int getId() {
+        return id;
     }
 
-    public void setId_task(int id_task) {
-        this.id_task = id_task;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -62,6 +64,14 @@ public class TableTask implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getTaskText() {
+        return taskText;
+    }
+
+    public void setTaskText(String taskText) {
+        this.taskText = taskText;
     }
 
     public String getCreateDate() {

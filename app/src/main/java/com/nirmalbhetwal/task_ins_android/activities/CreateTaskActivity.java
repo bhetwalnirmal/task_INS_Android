@@ -189,7 +189,7 @@ public class CreateTaskActivity  extends AppCompatActivity {
             }
         }
 
-//        initMore();
+        initMore();
 //        setCategoryIndicatorColor();
     }
 
@@ -267,7 +267,7 @@ public class CreateTaskActivity  extends AppCompatActivity {
         tableTask.setTaskStatus(taskProgress);
 
         if (alreadyAvailableTableTask != null) {
-            tableTask.setId_task(alreadyAvailableTableTask.getId_task());
+            tableTask.setId(alreadyAvailableTableTask.getId());
         }
 
         // ROOM does not allow database operation on the main thread
@@ -296,27 +296,20 @@ public class CreateTaskActivity  extends AppCompatActivity {
         new SaveTask().execute();
     }
 
-    private void initMore() {
-        final LinearLayout layoutMore = findViewById(R.id.layoutBottomBar);
-        final BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(layoutMore);
 
-        layoutMore.findViewById(R.id.textMore).setOnClickListener(new View.OnClickListener() {
+    private void initMore() {
+
+        findViewById(R.id.textMore).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {
-                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                } else {
-                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                }
+                saveTask();
 
             }
         });
 
-
-        layoutMore.findViewById(R.id.layoutAddImage).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.layoutAddImage).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                 if (ContextCompat.checkSelfPermission(
                         getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE
                 ) != PackageManager.PERMISSION_GRANTED) {
@@ -330,20 +323,19 @@ public class CreateTaskActivity  extends AppCompatActivity {
                 }
             }
         });
-        layoutMore.findViewById(R.id.layoutAudioRecord).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.layoutAudioRecord).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+
                 showAudioDialog();
             }
         });
 
         if (alreadyAvailableTableTask != null) {
-            layoutMore.findViewById(R.id.layoutDeleteTask).setVisibility(View.VISIBLE);
-            layoutMore.findViewById(R.id.layoutDeleteTask).setOnClickListener(new View.OnClickListener() {
+            findViewById(R.id.layoutDeleteTask).setVisibility(View.VISIBLE);
+            findViewById(R.id.layoutDeleteTask).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                     showDeleteDialog();
                 }
             });
@@ -387,28 +379,40 @@ public class CreateTaskActivity  extends AppCompatActivity {
             view.findViewById(R.id.audioRecord).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (!isRecording){
-                        isRecording = true;
-                        mediaRecorder = new MediaRecorder();
-                        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-                        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-                        mediaRecorder.setOutputFile(getRecordingFilePath());
-                        audioFilePath = getRecordingFilePath();
-                        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
 
-                        try {
-                            mediaRecorder.prepare();
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                    if (ContextCompat.checkSelfPermission(
+                            getApplicationContext(), Manifest.permission.RECORD_AUDIO
+                    ) != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions(
+                                CreateTaskActivity.this,
+                                new String[]{Manifest.permission.RECORD_AUDIO},
+                                REQUEST_CODE_STORAGE_PERMISSION
+                        );
+
+                    } else {
+                        if (!isRecording){
+                            isRecording = true;
+                            mediaRecorder = new MediaRecorder();
+                            mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+                            mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+                            mediaRecorder.setOutputFile(getRecordingFilePath());
+                            audioFilePath = getRecordingFilePath();
+                            mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+                            try {
+                                mediaRecorder.prepare();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            mediaRecorder.start();
+                        }
+                        else {
+                            mediaRecorder.stop();
+                            mediaRecorder.release();
+                            mediaRecorder=null;
                         }
 
-                        mediaRecorder.start();
                     }
-                    else {
-                        mediaRecorder.stop();
-                        mediaRecorder.release();
-                        mediaRecorder=null;
-                    }
+
                 }
             });
             view.findViewById(R.id.audioPlay).setOnClickListener(new View.OnClickListener() {
