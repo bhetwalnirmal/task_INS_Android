@@ -26,6 +26,7 @@ public class TableTask implements Serializable {
     @ColumnInfo(name = "due_time")
     private String dueTime;
 
+
     @ColumnInfo(name = "category")
     private String category;
 
