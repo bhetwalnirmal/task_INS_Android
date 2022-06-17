@@ -15,6 +15,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.nirmalbhetwal.task_ins_android.Listener.TableTaskListeners;
 import com.nirmalbhetwal.task_ins_android.R;
@@ -27,6 +28,7 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -36,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ImageView imageAddTaskMain;
     private List<TableTask> tableTasksList;
     private TaskListAdapter tableTaskAdapters;
+    private int taskClickedPosition = -1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,9 +64,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
         });
-}
 
-    private void findId() {
+        tasksRecycleView.setLayoutManager(
+                new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        );
+        tableTasksList = new ArrayList<>();
+        tableTaskAdapters = new TaskListAdapter(MainActivity.this,tableTasksList);
+        tasksRecycleView.setAdapter(tableTaskAdapters);
+
+}
+       private void findId() {
         inputSearch=findViewById(R.id.inputSearch);
         tasksRecycleView=findViewById(R.id.tasksRecycleView);
         imageAddTaskMain=findViewById(R.id.imageAddTaskMain);
