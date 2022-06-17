@@ -24,8 +24,10 @@
         <entry key="..\:/lambton/term2/android/Project/app/src/main/res/drawable/ic_image.xml" value="0.191" />
         <entry key="..\:/lambton/term2/android/Project/app/src/main/res/drawable/ic_search.xml" value="0.191" />
         <entry key="..\:/lambton/term2/android/Project/app/src/main/res/drawable/school.xml" value="0.1" />
+        <entry key="..\:/lambton/term2/android/Project/app/src/main/res/drawable/status_complete_indicatior.xml" value="0.1345" />
+        <entry key="..\:/lambton/term2/android/Project/app/src/main/res/drawable/status_incomplete_indicatior.xml" value="0.1345" />
         <entry key="..\:/lambton/term2/android/Project/app/src/main/res/layout/activity_create_task.xml" value="0.21" />
-        <entry key="..\:/lambton/term2/android/Project/app/src/main/res/layout/activity_main.xml" value="0.15" />
+        <entry key="..\:/lambton/term2/android/Project/app/src/main/res/layout/activity_main.xml" value="0.2" />
         <entry key="..\:/lambton/term2/android/Project/app/src/main/res/layout/adapter_subtask_layout.xml" value="0.17074275362318841" />
         <entry key="..\:/lambton/term2/android/Project/app/src/main/res/layout/content_main.xml" value="0.17074275362318841" />
         <entry key="..\:/lambton/term2/android/Project/app/src/main/res/layout/fragment_first.xml" value="0.1578125" />
