@@ -1,5 +1,6 @@
 package com.nirmalbhetwal.task_ins_android.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -82,5 +83,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         // Intent to create new task activity here..
+        if(view.getId() == R.id.imageAddTaskMain){
+            Intent addTaskWindow = new Intent(this, CreateTaskActivity.class);
+            startActivity(addTaskWindow);
+        }
     }
 }
