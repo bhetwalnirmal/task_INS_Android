@@ -262,6 +262,9 @@ public class CreateTaskActivity  extends AppCompatActivity {
         // tableTask.setCategory(selectedCategory.getCatName());
         tableTask.setTaskDesc(inputTaskDesc.getText().toString());
         tableTask.setCreateDate(textCreateDateTime.getText().toString());
+        tableTask.setDueDate(duedate);
+        tableTask.setDueTime(duetime);
+        tableTask.setTaskStatus(statustxt);
         // TODO: 17/06/2022 please pass string[] value uncomment below line
 //        tableTask.setImagePath(selectedImageBase64);
         tableTask.setTaskStatus(taskProgress);
