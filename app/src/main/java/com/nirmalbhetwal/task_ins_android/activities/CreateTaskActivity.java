@@ -170,17 +170,17 @@ public class CreateTaskActivity  extends AppCompatActivity {
 */
         textCreateDateTime.setText(alreadyAvailableTableTask.getCreateDate());
         // TODO: 17/06/2022 Here we are taking just one image
-        if (alreadyAvailableTableTask.getImagePath() != null && !alreadyAvailableTableTask.getImagePath()[0].trim().isEmpty()) {
+        if (alreadyAvailableTableTask.getImagePath() != null && !alreadyAvailableTableTask.getImagePath().split(",")[0].trim().isEmpty()) {
             // decode base64 string
             // TODO: 17/06/2022 Here we are taking just one image
-            byte[] bytes = Base64.decode(alreadyAvailableTableTask.getImagePath()[0], Base64.DEFAULT);
+            byte[] bytes = Base64.decode(alreadyAvailableTableTask.getImagePath().split(",")[0], Base64.DEFAULT);
             // Initialize bitmap
             Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
             // set bitmap on imageView
             imageTableTask.setImageBitmap(bitmap);
             imageTableTask.setVisibility(View.VISIBLE);
             // TODO: 17/06/2022 Here we are taking just one image
-            selectedImageBase64 = alreadyAvailableTableTask.getImagePath()[0];
+            selectedImageBase64 = alreadyAvailableTableTask.getImagePath().split(",")[0];
         }
     }
 
@@ -209,7 +209,7 @@ public class CreateTaskActivity  extends AppCompatActivity {
         tableTask.setTaskStatus(taskProgress);
 
         if (alreadyAvailableTableTask != null) {
-            tableTask.setId(alreadyAvailableTableTask.getId());
+            tableTask.setId_task(alreadyAvailableTableTask.getId_task());
         }
 
         // ROOM does not allow database operation on the main thread

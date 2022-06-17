@@ -51,6 +51,5 @@ dependencies {
     annotationProcessor "androidx.room:room-compiler:2.4.1"
     implementation "androidx.room:room-rxjava2:2.4.1"
     implementation "androidx.recyclerview:recyclerview:1.2.1"
-    implementation "android.arch.persistence.room:compiler:1.0.0-alpha9"
 
 }
