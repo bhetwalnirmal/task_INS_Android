@@ -32,53 +32,6 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:tint="@color/colorIcons" />
 
-
-            <ImageView
-                android:id="@+id/imageSave"
-                android:layout_width="@dimen/_20sdp"
-                android:layout_height="@dimen/_20sdp"
-                android:layout_marginEnd="@dimen/_12sdp"
-                android:background="@drawable/background_done_button"
-                android:contentDescription="@string/app_name"
-                android:padding="@dimen/_4sdp"
-                android:src="@drawable/ic_done"
-                app:layout_constraintBottom_toBottomOf="@id/imageBack"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/imageBack"
-                app:tint="@color/colorIcons" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/ubuntu_medium"
-                android:text="@string/is_your_task_complete"
-                android:paddingTop="@dimen/_20sdp"
-                android:layout_marginStart="@dimen/_15sdp"
-                android:layout_marginEnd="@dimen/_22sdp"
-                android:layout_weight="7"
-                android:visibility="gone"
-                android:textColor="@color/white"
-                app:layout_constraintTop_toBottomOf="@id/imageBack"
-                app:layout_constraintEnd_toStartOf="@id/spinnerCompleted"
-                />
-
-            <Spinner
-                android:id="@+id/spinnerCompleted"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:paddingTop="@dimen/_20sdp"
-                android:layout_marginStart="@dimen/_15sdp"
-                android:layout_marginEnd="@dimen/_42sdp"
-                android:layout_weight="7"
-                android:backgroundTint="@color/white"
-                android:gravity="center_vertical"
-                android:spinnerMode="dialog"
-                android:layout_marginTop="@dimen/_12sdp"
-                android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@id/imageBack"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/inputTaskTitle"
-                />
             <EditText
                 android:id="@+id/inputTaskTitle"
                 android:layout_width="match_parent"
@@ -98,7 +51,7 @@
                 android:layout_marginStart="@dimen/_12sdp"
                 android:layout_marginEnd="@dimen/_12sdp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/spinnerCompleted"
+                app:layout_constraintTop_toBottomOf="@id/imageBack"
                 tools:ignore="TouchTargetSizeCheck"
                 tools:layout_editor_absoluteX="22dp" />
 
@@ -435,12 +388,10 @@
         android:fontFamily="@font/ubuntu_medium"
         android:gravity="center"
         android:includeFontPadding="false"
-        android:text="@string/more"
+        android:text="@string/add_task"
         android:textSize="@dimen/_13ssp"
         android:textColor="@color/white"
         />
-
-
     </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
