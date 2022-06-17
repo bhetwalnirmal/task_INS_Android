@@ -185,6 +185,7 @@
                         android:orientation="vertical">
 
                         <ImageView
+                            android:id="@+id/ivLowPriority"
                             android:layout_width="match_parent"
                             android:layout_height="75dp"
                             android:layout_gravity="center"
@@ -220,6 +221,7 @@
                         android:orientation="vertical">
 
                         <ImageView
+                            android:id="@+id/ivMediumPriority"
                             android:layout_width="match_parent"
                             android:layout_height="75dp"
                             android:layout_gravity="center"
@@ -252,6 +254,7 @@
                         android:orientation="vertical">
 
                         <ImageView
+                            android:id="@+id/ivHighPriority"
                             android:layout_width="match_parent"
                             android:layout_height="75dp"
                             android:layout_gravity="center"

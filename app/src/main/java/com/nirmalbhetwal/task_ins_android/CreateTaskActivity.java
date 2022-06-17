@@ -21,13 +21,21 @@ import java.util.ArrayList;
 public class CreateTaskActivity extends AppCompatActivity {
     private static final int RESULT_LOAD_IMAGE = 1;
     LinearLayout lllayoutAddImage;
+    ImageView ivSaveTask, ivBackButton, ivLowPriority, ivMediumPriority, ivHighPriority;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_task);
 
+        // initialized the variables
         lllayoutAddImage = (LinearLayout) findViewById(R.id.layoutAddImage);
+        ivBackButton = (ImageView) findViewById(R.id.ivBack);
+        ivSaveTask = (ImageView) findViewById(R.id.ivSave);
+        ivLowPriority = (ImageView) findViewById(R.id.ivLowPriority);
+        ivMediumPriority = (ImageView) findViewById(R.id.ivMediumPriority);
+        ivHighPriority = (ImageView) findViewById(R.id.ivHighPriority);
+
         lllayoutAddImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -89,6 +97,9 @@ public class CreateTaskActivity extends AppCompatActivity {
 
                         }
                         Log.v("LOG_TAG", "Selected Images" + mArrayUri.size());
+                        for(Uri uri : mArrayUri) {
+                            Log.d("LOG_TAG", String.valueOf(uri));
+                        }
                     }
                 }
             } else {
