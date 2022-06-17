@@ -240,6 +240,14 @@ public class CreateTaskActivity  extends AppCompatActivity {
 
     private void initMore() {
 
+        findViewById(R.id.textMore).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveTask();
+
+            }
+        });
+
         findViewById(R.id.layoutAddImage).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
