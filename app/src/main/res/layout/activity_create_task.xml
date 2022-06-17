@@ -355,7 +355,6 @@
                     android:contentDescription="@string/app_name"
                     android:src="@drawable/ic_baseline_mic_24"
                     app:tint="@color/colorIcons" />
-
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
