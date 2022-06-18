@@ -1,4 +1,4 @@
-package com.nirmalbhetwal.task_ins_android.db;
+package com.nirmalbhetwal.task_ins_android.database;
 
 import android.content.Context;
 
@@ -6,7 +6,6 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-import com.nirmalbhetwal.task_ins_android.dao.TableTaskDao;
 import com.nirmalbhetwal.task_ins_android.entities.TableTask;
 
 

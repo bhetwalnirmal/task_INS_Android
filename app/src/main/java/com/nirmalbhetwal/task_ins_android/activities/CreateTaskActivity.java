@@ -2,8 +2,6 @@ package com.nirmalbhetwal.task_ins_android.activities;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -19,17 +17,13 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Base64;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -39,11 +33,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.nirmalbhetwal.task_ins_android.Categories;
 import com.nirmalbhetwal.task_ins_android.R;
-import com.nirmalbhetwal.task_ins_android.TaskCompleted;
-import com.nirmalbhetwal.task_ins_android.db.TableTaskDB;
+import com.nirmalbhetwal.task_ins_android.database.TableTaskDB;
 import com.nirmalbhetwal.task_ins_android.entities.TableTask;
 
 import java.io.ByteArrayOutputStream;
@@ -51,10 +42,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -70,10 +58,8 @@ public class CreateTaskActivity extends AppCompatActivity {
     private AlertDialog dialogDeleteTask;
     private AlertDialog dialogAudioRecord;
     private Spinner spinner;
-    private Categories selectedCategory;
     private Spinner taskSpinner;
     private String audioFilePath;
-    private TaskCompleted taskCompleted;
     private String taskProgress;
     private MediaRecorder mediaRecorder;
     private MediaPlayer mediaPlayer;
@@ -93,9 +79,6 @@ public class CreateTaskActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_task);
-
-        TaskCompleted.initCompleted();
-        Categories.initCategories();
 
         ImageView imageBack = findViewById(R.id.imageBack);
         imageBack.setOnClickListener(v -> onBackPressed());
