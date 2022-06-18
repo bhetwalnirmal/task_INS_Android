@@ -9,7 +9,9 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.GradientDrawable;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.net.Uri;
@@ -17,9 +19,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -54,9 +58,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class CreateTaskActivity  extends AppCompatActivity {
+public class CreateTaskActivity extends AppCompatActivity {
+
     private EditText inputTaskTitle, inputTaskDesc ,inputTaskCat;
-    private TextView textCreateDateTime,create_date,create_time,due_date,due_time,status_button;
+    private TextView textCreateDateTime;
     private View viewCategoryIndicator;
     private String selectedTaskColor;
     private ImageView imageTableTask;
@@ -83,9 +88,7 @@ public class CreateTaskActivity  extends AppCompatActivity {
     private static final int REQUEST_CODE_STORAGE_PERMISSION = 1;
     private static final int REQUEST_CODE_SELECT_IMAGE = 2;
     private static final int GALLERY_REQUEST = 100;
-    TimePickerDialog timePickerDialog;
-    DatePickerDialog datePickerDialog;
-    String statustxt,duetime,duedate;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,69 +100,16 @@ public class CreateTaskActivity  extends AppCompatActivity {
         ImageView imageBack = findViewById(R.id.imageBack);
         imageBack.setOnClickListener(v -> onBackPressed());
 
+        ImageView imageSave = findViewById(R.id.imageSave);
+        imageSave.setOnClickListener(v -> saveTask());
 
-        due_time = findViewById(R.id.due_time);
-        due_date = findViewById(R.id.due_date);
-        status_button = findViewById(R.id.status_button);
-        create_time = findViewById(R.id.create_time);
-        create_date = findViewById(R.id.create_date);
         inputTaskTitle = findViewById(R.id.inputTaskTitle);
         inputTaskCat = findViewById(R.id.inputTaskCategory);
         inputTaskDesc = findViewById(R.id.inputTaskDesc);
         textCreateDateTime = findViewById(R.id.textCreateDateTime);
         viewCategoryIndicator = findViewById(R.id.viewCategoryIndicator);
-        status_button.setText("Incompleted");
-        statustxt="Incompleted";
-        status_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                status_button.setText("Completed");
-                statustxt="Completed";
-            }
-        });
-        due_date.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // calender class's instance and get current date , month and year from calender
-                final Calendar c = Calendar.getInstance();
-                int mYear = c.get(Calendar.YEAR); // current year
-                int mMonth = c.get(Calendar.MONTH); // current month
-                int mDay = c.get(Calendar.DAY_OF_MONTH); // current day
-                // date picker dialog
-                datePickerDialog = new DatePickerDialog(CreateTaskActivity.this,
-                        new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                            public void onDateSet(android.widget.DatePicker view, int year,
-                                                  int monthOfYear, int dayOfMonth) {
-                                // set day of month , month and year value in the edit text
-                                due_date.setText(dayOfMonth + "-"
-                                        + (monthOfYear + 1) + "-" + year);
-                        duedate=dayOfMonth + "-"
-                                + (monthOfYear + 1) + "-" + year;
-                            }
-                        }, mYear, mMonth, mDay);
-                datePickerDialog.show();
-            }
-        });
-        due_time.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Use the current time as the default values for the picker
-                final Calendar c = Calendar.getInstance();
-                int hour = c.get(Calendar.HOUR_OF_DAY);
-                int minute = c.get(Calendar.MINUTE);
-                // Create a new instance of TimePickerDialog
-                timePickerDialog = new TimePickerDialog(CreateTaskActivity.this, new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                        due_time.setText( selectedHour + ":" + selectedMinute);
-                        duetime=selectedHour + ":" + selectedMinute;
-                    }
-                }, hour, minute, true);//Yes 24 hour time
-                timePickerDialog.setTitle("Select Time");
-                timePickerDialog.show();
-            }
-        });
+        imageTableTask = findViewById(R.id.imageTask);
+
 
         textCreateDateTime.setText(
                 new SimpleDateFormat("EEEE, dd MMMM yyyy HH:mm a", Locale.getDefault())
@@ -189,56 +139,27 @@ public class CreateTaskActivity  extends AppCompatActivity {
             }
         }
 
+
+
         initMore();
-//        setCategoryIndicatorColor();
+        setCategoryIndicatorColor();
     }
 
     private void setViewOrUpdateTableTask() {
         inputTaskTitle.setText(alreadyAvailableTableTask.getTitle());
-        inputTaskDesc.setText(alreadyAvailableTableTask.getTaskDesc());
+        inputTaskDesc.setText(alreadyAvailableTableTask.getTaskText());
         inputTaskCat.setText(alreadyAvailableTableTask.getCategory());
 
-        ArrayList<TaskCompleted> taskCompleteds = TaskCompleted.getTaskCompletedArrayList();
-        for (TaskCompleted taskCompleted : taskCompleteds) {
-            if (taskCompleted.getCompleted().equals(alreadyAvailableTableTask.getTaskStatus())){
-                this.taskCompleted = taskCompleted;
-            }
-        }
-        if (taskCompleted != null){
-            taskSpinner.setSelection(taskCompleteds.indexOf(selectedCategory));
-            taskSpinner.setVisibility(View.VISIBLE);
-
-        }else
-        {
-            taskSpinner.setSelection(1);
-            taskSpinner.setVisibility(View.VISIBLE);
-        }
-/*
-        ArrayList<Categories> categories = Categories.getCategoriesArrayList();
-        for (Categories category : categories) {
-            if (category.getCatName().equals(alreadyAvailableTableTask.getCategory())) {
-                this.selectedCategory = category;
-            }
-        }
-        if (selectedCategory != null) {
-            spinner.setSelection(categories.indexOf(selectedCategory));
-        } else {
-            spinner.setSelection(0);
-        }
-*/
-        textCreateDateTime.setText(alreadyAvailableTableTask.getCreateDate());
-        // TODO: 17/06/2022 Here we are taking just one image
-        if (alreadyAvailableTableTask.getImagePath() != null && !alreadyAvailableTableTask.getImagePath().split(",")[0].trim().isEmpty()) {
+        textCreateDateTime.setText(alreadyAvailableTableTask.getCreateDateTime());
+        if (alreadyAvailableTableTask.getImagePath() != null && !alreadyAvailableTableTask.getImagePath().trim().isEmpty()) {
             // decode base64 string
-            // TODO: 17/06/2022 Here we are taking just one image
-            byte[] bytes = Base64.decode(alreadyAvailableTableTask.getImagePath().split(",")[0], Base64.DEFAULT);
+            byte[] bytes = Base64.decode(alreadyAvailableTableTask.getImagePath(), Base64.DEFAULT);
             // Initialize bitmap
             Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
             // set bitmap on imageView
             imageTableTask.setImageBitmap(bitmap);
             imageTableTask.setVisibility(View.VISIBLE);
-            // TODO: 17/06/2022 Here we are taking just one image
-            selectedImageBase64 = alreadyAvailableTableTask.getImagePath().split(",")[0];
+            selectedImageBase64 = alreadyAvailableTableTask.getImagePath();
         }
     }
 
@@ -260,21 +181,18 @@ public class CreateTaskActivity  extends AppCompatActivity {
         tableTask.setTitle(inputTaskTitle.getText().toString());
         tableTask.setCategory(inputTaskCat.getText().toString());
         // tableTask.setCategory(selectedCategory.getCatName());
-        tableTask.setTaskDesc(inputTaskDesc.getText().toString());
-        tableTask.setCreateDate(textCreateDateTime.getText().toString());
-        tableTask.setDueDate(duedate);
-        tableTask.setDueTime(duetime);
-        tableTask.setTaskStatus(statustxt);
-        // TODO: 17/06/2022 please pass string[] value uncomment below line
-//        tableTask.setImagePath(selectedImageBase64);
-        tableTask.setTaskStatus(taskProgress);
+        tableTask.setTaskText(inputTaskDesc.getText().toString());
+        tableTask.setCreateDateTime(textCreateDateTime.getText().toString());
+        tableTask.setColor(selectedTaskColor);
+        tableTask.setImagePath(selectedImageBase64);
+        tableTask.setCompleted(taskProgress);
 
         if (alreadyAvailableTableTask != null) {
             tableTask.setId(alreadyAvailableTableTask.getId());
         }
 
         // ROOM does not allow database operation on the main thread
-        // Use of Async tableTask to bypass it.
+        // Use of Async task to bypass it.
 
         @SuppressLint("StaticFieldLeak")
         class SaveTask extends AsyncTask<Void, Void, Void> {
@@ -283,7 +201,7 @@ public class CreateTaskActivity  extends AppCompatActivity {
                 TableTaskDB.getDatabase(getApplicationContext()).tableTaskDao().insertTableTask(tableTask);
                 return null;
 
-//                TaskDatabase.getTaskDatabase(getApplicationContext()).taskDao().insertTask(tableTask);
+//                TaskDatabase.getTaskDatabase(getApplicationContext()).taskDao().insertTask(task);
 //                return null;
             }
 
@@ -299,16 +217,56 @@ public class CreateTaskActivity  extends AppCompatActivity {
         new SaveTask().execute();
     }
 
-
     private void initMore() {
 
-        findViewById(R.id.textMore).setOnClickListener(new View.OnClickListener() {
+        final ImageView imagePriorityLow = findViewById(R.id.imagePriorityLow);
+        final ImageView imagePriorityMedium = findViewById(R.id.imagePriorityMedium);
+        final ImageView imagePriorityHigh = findViewById(R.id.imagePriorityHigh);
+
+        findViewById(R.id.viewColorLow).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveTask();
-
+                selectedTaskColor = "#FF018786";
+                imagePriorityLow.setImageResource(R.drawable.ic_done);
+                imagePriorityMedium.setImageResource(0);
+                imagePriorityHigh.setImageResource(0);
+                setCategoryIndicatorColor();
             }
         });
+        findViewById(R.id.viewColorMedium).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectedTaskColor = "#FDBE3B";
+                imagePriorityLow.setImageResource(0);
+                imagePriorityMedium.setImageResource(R.drawable.ic_done);
+                imagePriorityHigh.setImageResource(0);
+                setCategoryIndicatorColor();
+            }
+        });
+        findViewById(R.id.viewColorHigh).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectedTaskColor = "#FF4842";
+                imagePriorityLow.setImageResource(0);
+                imagePriorityMedium.setImageResource(0);
+                imagePriorityHigh.setImageResource(R.drawable.ic_done);
+                setCategoryIndicatorColor();
+            }
+        });
+
+        if (alreadyAvailableTableTask != null && alreadyAvailableTableTask.getColor() != null && !alreadyAvailableTableTask.getColor().trim().isEmpty()) {
+            switch (alreadyAvailableTableTask.getColor()) {
+                case "#FF018786":
+                    findViewById(R.id.viewColorLow).performClick();
+                    break;
+                case "#FDBE3B":
+                    findViewById(R.id.viewColorMedium).performClick();
+                    break;
+                case "#FF4842":
+                    findViewById(R.id.viewColorHigh).performClick();
+                    break;
+            }
+        }
 
         findViewById(R.id.layoutAddImage).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -329,7 +287,6 @@ public class CreateTaskActivity  extends AppCompatActivity {
         findViewById(R.id.layoutAudioRecord).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 showAudioDialog();
             }
         });
@@ -516,12 +473,16 @@ public class CreateTaskActivity  extends AppCompatActivity {
         dialogDeleteTask.show();
     }
 
+    private void setCategoryIndicatorColor() {
+        GradientDrawable gradientDrawable = (GradientDrawable) viewCategoryIndicator.getBackground();
+        gradientDrawable.setColor(Color.parseColor(selectedTaskColor));
+    }
 
     public void selectImage() {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), 3);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), REQUEST_CODE_SELECT_IMAGE);
     }
 
     @Override
@@ -557,7 +518,6 @@ public class CreateTaskActivity  extends AppCompatActivity {
             if (data != null) {
                 Uri selectedImageUri = data.getData();
                 if (selectedImageUri != null) {
-                    // TODO: 17/06/2022 Handle multiple image selected 
                     try {
                         InputStream inputStream = getContentResolver().openInputStream(selectedImageUri);
                         Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
@@ -585,6 +545,7 @@ public class CreateTaskActivity  extends AppCompatActivity {
         bm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] b = baos.toByteArray();
         String encImage = Base64.encodeToString(b, Base64.DEFAULT);
+
         return encImage;
-    }
-}
+
+    }}

@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
-    >
+    tools:context=".activities.CreateTaskActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -32,6 +31,53 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:tint="@color/colorIcons" />
 
+
+            <ImageView
+                android:id="@+id/imageSave"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_12sdp"
+                android:background="@drawable/ic_done"
+                android:contentDescription="@string/app_name"
+                android:padding="@dimen/_4sdp"
+                android:src="@drawable/ic_done"
+                app:layout_constraintBottom_toBottomOf="@id/imageBack"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/imageBack"
+                app:tint="@color/colorIcons" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/ubuntu_medium"
+                android:text="@string/is_your_task_complete"
+                android:paddingTop="@dimen/_20sdp"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_22sdp"
+                android:layout_weight="7"
+                android:visibility="gone"
+                android:textColor="@color/white"
+                app:layout_constraintTop_toBottomOf="@id/imageBack"
+                app:layout_constraintEnd_toStartOf="@id/spinnerCompleted"
+                />
+
+            <Spinner
+                android:id="@+id/spinnerCompleted"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/_20sdp"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_42sdp"
+                android:layout_weight="7"
+                android:backgroundTint="@color/white"
+                android:gravity="center_vertical"
+                android:spinnerMode="dialog"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/imageBack"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/inputTaskTitle"
+                />
             <EditText
                 android:id="@+id/inputTaskTitle"
                 android:layout_width="match_parent"
@@ -44,14 +90,13 @@
                 android:importantForAutofill="no"
                 android:includeFontPadding="false"
                 android:inputType="text"
-                android:textColor="@color/white"
                 android:textColorHint="@color/colorTextHint"
                 android:textSize="@dimen/_16sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginStart="@dimen/_12sdp"
                 android:layout_marginEnd="@dimen/_12sdp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/imageBack"
+                app:layout_constraintTop_toBottomOf="@id/spinnerCompleted"
                 tools:ignore="TouchTargetSizeCheck"
                 tools:layout_editor_absoluteX="22dp" />
 
@@ -81,7 +126,6 @@
                 android:importantForAutofill="no"
                 android:includeFontPadding="false"
                 android:inputType="text"
-                android:textColor="@color/white"
                 android:textColorHint="@color/colorTextHint"
                 android:textSize="@dimen/_16sdp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -103,6 +147,18 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/inputTaskCategory" />
 
+            <ImageView
+                android:id="@+id/imageTask"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_12sdp"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/app_name"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/inputTaskCategory" />
+
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:id="@+id/layoutDelete"
                 android:layout_width="wrap_content"
@@ -112,8 +168,9 @@
                 android:layout_marginEnd="@dimen/_12sdp"
                 android:gravity="center_horizontal"
                 android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@id/imglayout"
+                app:layout_constraintTop_toBottomOf="@id/imageTask"
                 tools:ignore="MissingConstraints">
+
                 <ImageView
                     android:id="@+id/imageDelete"
                     android:layout_width="@dimen/_20sdp"
@@ -121,137 +178,129 @@
                     android:background="@drawable/background_delete"
                     android:contentDescription="@string/app_name"
                     android:src="@color/colorDefaultTaskColor"
+
                     />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
-            <LinearLayout
-                android:visibility="gone"
-                android:id="@+id/layoutaddsubtask"
+
+            <EditText
+                android:id="@+id/inputTaskDesc"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_35sdp"
-                android:layout_margin="@dimen/_10sdp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_12sdp"
+                android:layout_marginBottom="@dimen/_15sdp"
+                android:background="@drawable/bg_white_stroke"
+                android:fontFamily="@font/ubuntu_regular"
+                android:gravity="top"
+                android:hint="@string/this_is_where_you_fill_the_description_of_the_task"
+                android:importantForAutofill="no"
+                android:includeFontPadding="false"
+                android:inputType="textMultiLine"
+                android:minHeight="@dimen/_100sdp"
+                android:padding="8dp"
+                android:textColorHint="@color/colorTextHint"
+                android:textSize="@dimen/_13sdp"
+
+                app:layout_constraintTop_toBottomOf="@id/imageTask" />
+
+
+            <LinearLayout
+                android:id="@+id/layoutPriority"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:orientation="horizontal"
-                tools:ignore = "UseCompoundDrawable"
+                android:layout_margin="@dimen/_10sdp"
                 app:layout_constraintTop_toBottomOf="@id/inputTaskDesc"
+                android:orientation="horizontal"
                 >
-
-                <ImageView
-                    android:layout_width="@dimen/_22sdp"
-                    android:layout_height="@dimen/_22sdp"
-                    android:contentDescription="@string/app_name"
-                    android:src="@drawable/ic_add"
-                    app:tint="@color/colorIcons" />
-
                 <TextView
-                    android:layout_width="match_parent"
+                    android:id="@+id/textPriority"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_10sdp"
+                    android:text="@string/set_priority"
                     android:fontFamily="@font/ubuntu_medium"
+                    android:textSize="@dimen/_15ssp"
                     android:includeFontPadding="false"
-                    android:text="@string/add_sub_task"
-                    android:textColor="@color/colorIcons"
-                    android:textSize="@dimen/_12ssp"
                     />
+                <FrameLayout
 
-            </LinearLayout>
-            <androidx.recyclerview.widget.RecyclerView
-                android:visibility="gone"
-                android:id="@+id/subtasksRecycleView"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_200sdp"
-                android:clipToPadding="false"
-                android:paddingStart="@dimen/_12sdp"
-                android:paddingBottom="@dimen/_12sdp"
-                tools:listitem="@layout/adapter_subtask_layout"
-                app:layout_constraintTop_toBottomOf="@id/layoutaddsubtask"
-                />
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
 
-            <LinearLayout
-                android:visibility="gone"
-                android:id="@+id/lay_create_date"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintTop_toBottomOf="@id/subtasksRecycleView" >
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_weight="1"
+                    <View
+                        android:layout_gravity="center"
+                        android:id="@+id/viewColorLow"
+                        android:layout_width="@dimen/_35sdp"
+                        android:layout_height="@dimen/_35sdp"
+                        android:background="@drawable/background_taskcolor_low"
+                        />
+
+                    <ImageView
+                        android:layout_gravity="center"
+                        android:id="@+id/imagePriorityLow"
+                        android:layout_width="@dimen/_35sdp"
+                        android:layout_height="@dimen/_35sdp"
+                        android:contentDescription="@string/app_name"
+                        android:padding="@dimen/_10sdp"
+                        android:src="@drawable/ic_done"
+                        app:tint="@color/white" />
+
+                </FrameLayout>
+
+                <FrameLayout
+
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_12sdp"
-                    android:layout_marginTop="@dimen/_15sdp"
-                    android:layout_marginEnd="@dimen/_12sdp"
-                    android:layout_marginBottom="@dimen/_15sdp"
-                    android:fontFamily="@font/ubuntu_regular"
-                    android:gravity="top"
-                    android:hint="Created Date"
-                    android:minHeight="@dimen/_10sdp"
-                    android:padding="8dp"
-                    android:textColor="@color/white"
-                    android:textColorHint="@color/colorTextHint"
-                    android:textSize="@dimen/_13sdp"
-                    android:background="@drawable/bg_white_stroke"
-                    android:id="@+id/create_date"/>
-                <TextView
-                    android:id="@+id/create_time"
-                    android:layout_width="match_parent"
-                    android:layout_weight="1"
+                    android:layout_weight="1">
+
+                    <View
+                        android:layout_gravity="center"
+                        android:id="@+id/viewColorMedium"
+                        android:layout_width="@dimen/_35sdp"
+                        android:layout_height="@dimen/_35sdp"
+                        android:background="@drawable/background_taskcolor_medium"
+                        />
+
+                    <ImageView
+                        android:layout_gravity="center"
+                        android:id="@+id/imagePriorityMedium"
+                        android:layout_width="@dimen/_35sdp"
+                        android:layout_height="@dimen/_35sdp"
+                        android:contentDescription="@string/app_name"
+                        android:padding="@dimen/_10sdp"
+                        android:src="@drawable/ic_done"
+                        app:tint="@color/white" />
+
+                </FrameLayout>
+
+                <FrameLayout
+
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_15sdp"
-                    android:layout_marginEnd="@dimen/_12sdp"
-                    android:layout_marginBottom="@dimen/_15sdp"
-                    android:fontFamily="@font/ubuntu_regular"
-                    android:gravity="top"
-                    android:hint="Created Time"
-                    android:minHeight="@dimen/_10sdp"
-                    android:padding="8dp"
-                    android:textColor="@color/white"
-                    android:textColorHint="@color/colorTextHint"
-                    android:textSize="@dimen/_13sdp"
-                    android:background="@drawable/bg_white_stroke"
-                    />
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/lay_due_date"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintTop_toBottomOf="@id/lay_create_date">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_12sdp"
-                    android:layout_marginTop="@dimen/_15sdp"
-                    android:layout_marginEnd="@dimen/_12sdp"
-                    android:layout_marginBottom="@dimen/_15sdp"
-                    android:fontFamily="@font/ubuntu_regular"
-                    android:gravity="top"
-                    android:hint="Due Date"
-                    android:minHeight="@dimen/_10sdp"
-                    android:padding="8dp"
-                    android:textColor="@color/white"
-                    android:textColorHint="@color/colorTextHint"
-                    android:textSize="@dimen/_13sdp"
-                    android:background="@drawable/bg_white_stroke"
-                    android:id="@+id/due_date"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_15sdp"
-                    android:layout_marginEnd="@dimen/_12sdp"
-                    android:layout_marginBottom="@dimen/_15sdp"
-                    android:fontFamily="@font/ubuntu_regular"
-                    android:gravity="top"
-                    android:hint="Due Time"
-                    android:minHeight="@dimen/_10sdp"
-                    android:padding="8dp"
-                    android:textColor="@color/white"
-                    android:textColorHint="@color/colorTextHint"
-                    android:textSize="@dimen/_13sdp"
-                    android:background="@drawable/bg_white_stroke"
-                    android:id="@+id/due_time"/>
+                    android:layout_weight="1">
+
+                    <View
+                        android:layout_gravity="center"
+                        android:id="@+id/viewColorHigh"
+                        android:layout_width="@dimen/_35sdp"
+                        android:layout_height="@dimen/_35sdp"
+                        android:background="@drawable/background_taskcolor_high"
+                        />
+
+                    <ImageView
+                        android:layout_gravity="center"
+                        android:id="@+id/imagePriorityHigh"
+                        android:layout_width="@dimen/_35sdp"
+                        android:layout_height="@dimen/_35sdp"
+                        android:contentDescription="@string/app_name"
+                        android:padding="@dimen/_10sdp"
+                        android:src="@drawable/ic_done"
+                        app:tint="@color/white" />
+
+                </FrameLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -262,7 +311,7 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 tools:ignore = "UseCompoundDrawable"
-                app:layout_constraintTop_toBottomOf="@id/lay_due_date"
+                app:layout_constraintTop_toBottomOf="@id/layoutAudioRecord"
                 >
 
                 <ImageView
@@ -285,35 +334,6 @@
 
             </LinearLayout>
             <LinearLayout
-                android:id="@+id/imglayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@id/layoutAddImage">
-                <ImageView
-                    android:id="@+id/imageTask1"
-                    android:layout_width="@dimen/_100sdp"
-                    android:layout_height="@dimen/_100sdp"
-                    android:adjustViewBounds="true"
-                    android:contentDescription="@string/app_name"
-                    />
-                <ImageView
-                    android:id="@+id/imageTask2"
-                    android:layout_width="@dimen/_100sdp"
-                    android:layout_height="@dimen/_100sdp"
-                    android:adjustViewBounds="true"
-                    android:contentDescription="@string/app_name"
-                    />
-                <ImageView
-                    android:id="@+id/imageTask3"
-                    android:layout_width="@dimen/_100sdp"
-                    android:layout_height="@dimen/_100sdp"
-                    android:adjustViewBounds="true"
-                    android:contentDescription="@string/app_name"
-                    />
-            </LinearLayout>
-            <LinearLayout
                 android:id="@+id/layoutAudioRecord"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_35sdp"
@@ -321,7 +341,7 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 tools:ignore = "UseCompoundDrawable"
-                app:layout_constraintTop_toBottomOf="@id/imglayout"
+                app:layout_constraintTop_toBottomOf="@id/layoutPriority"
                 >
 
                 <ImageView
@@ -330,6 +350,7 @@
                     android:contentDescription="@string/app_name"
                     android:src="@drawable/ic_baseline_mic_24"
                     app:tint="@color/colorIcons" />
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -342,19 +363,7 @@
                     />
 
             </LinearLayout>
-            <TextView
-                android:id="@+id/status_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Incompleted"
-                android:textColor="@color/blue"
-                android:padding="@dimen/_5sdp"
-                android:layout_margin="@dimen/_3sdp"
-                android:textStyle="bold"
-                android:background="@drawable/bg_white_stroke"
-                app:layout_constraintTop_toBottomOf="@id/layoutAudioRecord"
-                app:layout_constraintEnd_toEndOf="@id/layoutAudioRecord"
-                />
+
             <LinearLayout
                 android:id="@+id/layoutDeleteTask"
                 android:layout_width="match_parent"
@@ -368,6 +377,7 @@
                 android:orientation="horizontal">
 
                 <ImageView
+
                     android:layout_width="@dimen/_22sdp"
                     android:layout_height="@dimen/_22sdp"
                     android:contentDescription="@string/app_name"
@@ -386,49 +396,10 @@
                     />
 
             </LinearLayout>
-            <EditText
-                android:id="@+id/inputTaskDesc"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_12sdp"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:layout_marginEnd="@dimen/_12sdp"
-                android:layout_marginBottom="@dimen/_15sdp"
-                android:background="@drawable/bg_white_stroke"
-                android:fontFamily="@font/ubuntu_regular"
-                android:gravity="top"
-                android:hint="@string/this_is_where_you_fill_the_description_of_the_task"
-                android:importantForAutofill="no"
-                android:includeFontPadding="false"
-                android:inputType="textMultiLine"
-                android:minHeight="@dimen/_100sdp"
-                android:padding="8dp"
-                android:textColorHint="@color/colorTextHint"
-                android:textSize="@dimen/_13sdp"
-                app:layout_constraintTop_toBottomOf="@id/inputTaskCategory" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
     </ScrollView>
-
-    <LinearLayout
-        android:id="@+id/layoutBottomBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@drawable/background_bottombar"
-        app:behavior_peekHeight="@dimen/_40sdp"
-        app:layout_behavior="@string/bottom_sheet_behavior">
-
-    <TextView
-        android:id="@+id/textMore"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_40sdp"
-        android:fontFamily="@font/ubuntu_medium"
-        android:gravity="center"
-        android:includeFontPadding="false"
-        android:text="@string/add_task"
-        android:textSize="@dimen/_13ssp"
-        android:textColor="@color/white"
-        />
-    </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

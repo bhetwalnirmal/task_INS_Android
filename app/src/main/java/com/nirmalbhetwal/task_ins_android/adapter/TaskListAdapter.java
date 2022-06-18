@@ -35,16 +35,13 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TableT
     private List<TableTask> tablesTasks;
     private TableTaskListeners tableTaskListeners;
     private Timer timer;
-    private Context mc;
     private List<TableTask> tableTaskssource;
 
-    public TaskListAdapter(Context mc, List<TableTask> tablesTasks) {
+    public TaskListAdapter(List<TableTask> tablesTasks, TableTaskListeners tableTaskListeners) {
         this.tablesTasks = tablesTasks;
-        this.mc = mc;
-      //  this.tableTaskListeners = tableTaskListeners;
+        this.tableTaskListeners = tableTaskListeners;
         tableTaskssource = tablesTasks;
     }
-
 
     @NonNull
     @Override
@@ -61,34 +58,12 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TableT
     @Override
     public void onBindViewHolder(@NonNull TableTaskViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.setTableTask(tablesTasks.get(position));
-        // tableTaskListeners.onTableTaskClicked(tablesTasks.get(position), position);
-       holder.edit_task.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View view) {
-
-           }
-       });
-        holder.delete_task.setOnClickListener(new View.OnClickListener() {
+        holder.layoutTask.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-
+            public void onClick(View v) {
+                tableTaskListeners.onTableTaskClicked(tablesTasks.get(position), position);
             }
         });
-
-        if (tablesTasks.get(position).getTaskStatus().equals("Completed")) {
-            holder.task_status.setBackground(mc.getResources().getDrawable(R.drawable.status_complete_indicatior));
-            holder.status_task.setBackground(mc.getResources().getDrawable(R.drawable.background_taskcolor_low));
-        }
-        else if(tablesTasks.get(position).getTaskStatus().equals("Incompleted")){
-            holder.task_status.setBackground(mc.getResources().getDrawable(R.drawable.status_incomplete_indicatior));
-            holder.status_task.setBackground(mc.getResources().getDrawable(R.drawable.background_taskcolor_high));
-        }
-        else
-        {
-            holder.task_status.setBackground(mc.getResources().getDrawable(R.drawable.background_category_indicator));
-            holder.status_task.setBackground(mc.getResources().getDrawable(R.drawable.background_taskcolor_medium));
-        }
-
     }
 
     @Override
@@ -102,47 +77,62 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TableT
     }
 
     static class TableTaskViewHolder extends RecyclerView.ViewHolder{
-        View task_status;
-        TextView txt_task_title, txt_task_category, txt_create_date_time, txt_due_date_time;
-        //LinearLayout layoutTask;
-        ImageView task_img,status_task,edit_task,delete_task;
+
+        TextView textTableTitle, textTableCategory, textTableDate, textProgress, textComplete;
+        LinearLayout layoutTask;
+        RoundedImageView imageTableTask;
 
         public TableTaskViewHolder(@NonNull View itemView) {
             super(itemView);
-            task_status = itemView.findViewById(R.id.task_status);
-            task_img = itemView.findViewById(R.id.task_img);
-            txt_task_title = itemView.findViewById(R.id.txt_task_title);
-            txt_task_category = itemView.findViewById(R.id.txt_task_category);
-            txt_create_date_time = itemView.findViewById(R.id.txt_create_date_time);
-            txt_due_date_time = itemView.findViewById(R.id.txt_due_date_time);
-            status_task = itemView.findViewById(R.id.status_task);
-            edit_task = itemView.findViewById(R.id.edit_task);
-            delete_task = itemView.findViewById(R.id.delete_task);
+            textTableTitle = itemView.findViewById(R.id.textRVTitle);
+            textTableCategory = itemView.findViewById(R.id.textRVCategory);
+            textTableDate = itemView.findViewById(R.id.textRVCreatedDateTime);
+            layoutTask = itemView.findViewById(R.id.layoutTask);
+            imageTableTask = itemView.findViewById(R.id.imageRVTask);
+            textProgress = itemView.findViewById(R.id.textProgress);
+            textComplete = itemView.findViewById(R.id.textComplete);
         }
 
         void setTableTask(TableTask tableTask) {
-            txt_task_title.setText(tableTask.getTitle());
-            txt_create_date_time.setText(tableTask.getTitle());
-            txt_due_date_time.setText(tableTask.getTitle());
+            textTableTitle.setText(tableTask.getTitle());
             if (tableTask.getCategory().trim().isEmpty()){
-                txt_task_category.setVisibility(View.GONE);
+                textTableCategory.setVisibility(View.GONE);
             }
             else
             {
-                txt_task_category.setText(tableTask.getCategory());
+                textTableCategory.setText(tableTask.getCategory());
             }
-            if (tableTask.getImagePath() != null) {
-                File imgFile = new  File(tableTask.getImagePath().split(",")[0]);
-                Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-//                byte[] bytes= Base64.decode(tableTask.getImagePath(),Base64.DEFAULT);
-//                Bitmap bitmap= BitmapFactory.decodeByteArray(bytes,0,bytes.length);
-                task_img.setImageBitmap(myBitmap);
-                //imageTableTask.setImageBitmap(BitmapFactory.decodeFile(tableTask.getImagePath()));
-                task_img.setVisibility(View.VISIBLE);
+
+            textTableDate.setText(tableTask.getCreateDateTime());
+
+            GradientDrawable gradientDrawable = (GradientDrawable) layoutTask.getBackground();
+            if (tableTask.getColor() != null){
+                gradientDrawable.setColor(Color.parseColor(tableTask.getColor()));
             }
             else {
-                task_img.setVisibility(View.GONE);
+                gradientDrawable.setColor(Color.parseColor("#333333"));
             }
+
+            if (tableTask.getImagePath() != null) {
+
+                byte[] bytes= Base64.decode(tableTask.getImagePath(),Base64.DEFAULT);
+                Bitmap bitmap= BitmapFactory.decodeByteArray(bytes,0,bytes.length);
+                imageTableTask.setImageBitmap(bitmap);
+                //imageTableTask.setImageBitmap(BitmapFactory.decodeFile(tableTask.getImagePath()));
+                imageTableTask.setVisibility(View.VISIBLE);
+            }
+            else {
+                imageTableTask.setVisibility(View.GONE);
+            }
+/*
+            if (tableTask.getCompleted() == "Completed") {
+                textComplete.setVisibility(View.VISIBLE);
+
+            }
+            else {
+                textProgress.setVisibility(View.VISIBLE);
+            }
+            */
 
         }
     }
@@ -158,8 +148,8 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TableT
                     ArrayList<TableTask> temp = new ArrayList<>();
                     for (TableTask tableTask : tableTaskssource) {
                         if (tableTask.getTitle().toLowerCase().contains(searchKeyword.toLowerCase())
-                        || tableTask.getCategory().toLowerCase().contains(searchKeyword.toLowerCase())
-                        || tableTask.getCategory().toLowerCase().contains(searchKeyword.toLowerCase())) {
+                                || tableTask.getCategory().toLowerCase().contains(searchKeyword.toLowerCase())
+                                || tableTask.getCategory().toLowerCase().contains(searchKeyword.toLowerCase())) {
                             temp.add(tableTask);
                         }
                     }
