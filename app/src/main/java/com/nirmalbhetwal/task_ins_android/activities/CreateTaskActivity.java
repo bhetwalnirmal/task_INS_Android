@@ -191,8 +191,7 @@ public class CreateTaskActivity extends AppCompatActivity {
             tableTask.setId(alreadyAvailableTableTask.getId());
         }
 
-        // ROOM does not allow database operation on the main thread
-        // Use of Async task to bypass it.
+        // Use of Async task to access data in room database.
 
         @SuppressLint("StaticFieldLeak")
         class SaveTask extends AsyncTask<Void, Void, Void> {
@@ -201,8 +200,6 @@ public class CreateTaskActivity extends AppCompatActivity {
                 TableTaskDB.getDatabase(getApplicationContext()).tableTaskDao().insertTableTask(tableTask);
                 return null;
 
-//                TaskDatabase.getTaskDatabase(getApplicationContext()).taskDao().insertTask(task);
-//                return null;
             }
 
             @Override

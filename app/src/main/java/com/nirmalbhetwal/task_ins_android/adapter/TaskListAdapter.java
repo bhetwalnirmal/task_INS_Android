@@ -19,9 +19,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.makeramen.roundedimageview.RoundedImageView;
-import com.nirmalbhetwal.task_ins_android.Listener.TableTaskListeners;
 import com.nirmalbhetwal.task_ins_android.R;
 import com.nirmalbhetwal.task_ins_android.entities.TableTask;
+import com.nirmalbhetwal.task_ins_android.listeners.TableTaskListeners;
 
 import java.io.File;
 import java.util.ArrayList;
