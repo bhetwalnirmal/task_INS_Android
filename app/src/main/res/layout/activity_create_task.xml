@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
-    >
+    tools:context=".activities.CreateTaskActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -21,8 +20,8 @@
 
             <ImageView
                 android:id="@+id/imageBack"
-                android:layout_width="@dimen/_30sdp"
-                android:layout_height="@dimen/_30sdp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_marginStart="@dimen/_6sdp"
                 android:layout_marginTop="@dimen/_20sdp"
                 android:layout_marginEnd="@dimen/_12sdp"
@@ -32,11 +31,58 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:tint="@color/colorIcons" />
 
+            <ImageView
+                android:id="@+id/imageSave"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_12sdp"
+                android:background="@drawable/ic_delete"
+                android:contentDescription="@string/app_name"
+                android:padding="@dimen/_4sdp"
+                android:src="@drawable/ic_done"
+                app:layout_constraintBottom_toBottomOf="@id/imageBack"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/imageBack"
+                app:tint="@color/colorIcons" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_22sdp"
+                android:layout_weight="7"
+                android:fontFamily="@font/ubuntu_medium"
+                android:paddingTop="@dimen/_20sdp"
+                android:text="@string/is_your_task_complete"
+                android:textColor="@color/white"
+                android:visibility="gone"
+                app:layout_constraintEnd_toStartOf="@id/spinnerCompleted"
+                app:layout_constraintTop_toBottomOf="@id/imageBack" />
+
+            <Spinner
+                android:id="@+id/spinnerCompleted"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:layout_marginEnd="@dimen/_42sdp"
+                android:layout_weight="7"
+                android:backgroundTint="@color/white"
+                android:gravity="center_vertical"
+                android:paddingTop="@dimen/_20sdp"
+                android:spinnerMode="dialog"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@id/inputTaskTitle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/imageBack" />
+
             <EditText
                 android:id="@+id/inputTaskTitle"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_35sdp"
+                android:layout_marginStart="@dimen/_12sdp"
                 android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_12sdp"
                 android:background="@null"
                 android:fontFamily="@font/ubuntu_bold"
                 android:hint="@string/task_title"
@@ -44,14 +90,11 @@
                 android:importantForAutofill="no"
                 android:includeFontPadding="false"
                 android:inputType="text"
-                android:textColor="@color/white"
                 android:textColorHint="@color/colorTextHint"
                 android:textSize="@dimen/_16sdp"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginStart="@dimen/_12sdp"
-                android:layout_marginEnd="@dimen/_12sdp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/imageBack"
+                app:layout_constraintTop_toBottomOf="@id/spinnerCompleted"
                 tools:ignore="TouchTargetSizeCheck"
                 tools:layout_editor_absoluteX="22dp" />
 
@@ -59,21 +102,23 @@
                 android:id="@+id/textCreateDateTime"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_12sdp"
+                android:layout_marginEnd="@dimen/_12sdp"
                 android:fontFamily="@font/ubuntu_regular"
                 android:includeFontPadding="false"
                 android:textColor="@color/colorIcons"
                 android:textSize="@dimen/_10sdp"
-                android:layout_marginStart="@dimen/_12sdp"
-                android:layout_marginEnd="@dimen/_12sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/inputTaskTitle" />
+
             <EditText
-                android:paddingStart="@dimen/_10sdp"
                 android:id="@+id/inputTaskCategory"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_35sdp"
+                android:layout_marginStart="@dimen/_12sdp"
                 android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_12sdp"
                 android:background="@null"
                 android:fontFamily="@font/ubuntu_medium"
                 android:hint="@string/task_category"
@@ -81,16 +126,27 @@
                 android:importantForAutofill="no"
                 android:includeFontPadding="false"
                 android:inputType="text"
-                android:textColor="@color/white"
+                android:paddingStart="@dimen/_10sdp"
                 android:textColorHint="@color/colorTextHint"
                 android:textSize="@dimen/_16sdp"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginStart="@dimen/_12sdp"
-                android:layout_marginEnd="@dimen/_12sdp"
                 app:layout_constraintStart_toStartOf="@id/viewCategoryIndicator"
                 app:layout_constraintTop_toBottomOf="@id/textCreateDateTime"
                 tools:ignore="TouchTargetSizeCheck"
                 tools:layout_editor_absoluteX="22dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/subTasksRecycleView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:clipToPadding="false"
+                android:paddingStart="@dimen/_12sdp"
+                android:paddingEnd="@dimen/_12sdp"
+                android:paddingBottom="@dimen/_12sdp"
+                tools:listitem="@layout/item_container_subtask"
+                app:layout_constraintTop_toBottomOf="@id/inputTaskDesc"
+
+                />
 
 
             <View
@@ -103,289 +159,19 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/inputTaskCategory" />
 
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:id="@+id/layoutDelete"
-                android:layout_width="wrap_content"
+            <ImageView
+                android:id="@+id/imageTask"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_12sdp"
                 android:layout_marginTop="@dimen/_15sdp"
                 android:layout_marginEnd="@dimen/_12sdp"
-                android:gravity="center_horizontal"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/app_name"
                 android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@id/imglayout"
-                tools:ignore="MissingConstraints">
-                <ImageView
-                    android:id="@+id/imageDelete"
-                    android:layout_width="@dimen/_20sdp"
-                    android:layout_height="@dimen/_20sdp"
-                    android:background="@drawable/background_delete"
-                    android:contentDescription="@string/app_name"
-                    android:src="@color/colorDefaultTaskColor"
-                    />
+                app:layout_constraintTop_toBottomOf="@id/inputTaskCategory" />
 
-            </androidx.appcompat.widget.LinearLayoutCompat>
-            <LinearLayout
-                android:visibility="gone"
-                android:id="@+id/layoutaddsubtask"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_35sdp"
-                android:layout_margin="@dimen/_10sdp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                tools:ignore = "UseCompoundDrawable"
-                app:layout_constraintTop_toBottomOf="@id/inputTaskDesc"
-                >
 
-                <ImageView
-                    android:layout_width="@dimen/_22sdp"
-                    android:layout_height="@dimen/_22sdp"
-                    android:contentDescription="@string/app_name"
-                    android:src="@drawable/ic_add"
-                    app:tint="@color/colorIcons" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:fontFamily="@font/ubuntu_medium"
-                    android:includeFontPadding="false"
-                    android:text="@string/add_sub_task"
-                    android:textColor="@color/colorIcons"
-                    android:textSize="@dimen/_12ssp"
-                    />
-
-            </LinearLayout>
-            <androidx.recyclerview.widget.RecyclerView
-                android:visibility="gone"
-                android:id="@+id/subtasksRecycleView"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_200sdp"
-                android:clipToPadding="false"
-                android:paddingStart="@dimen/_12sdp"
-                android:paddingBottom="@dimen/_12sdp"
-                tools:listitem="@layout/adapter_subtask_layout"
-                app:layout_constraintTop_toBottomOf="@id/layoutaddsubtask"
-                />
-
-            <LinearLayout
-                android:visibility="gone"
-                android:id="@+id/lay_create_date"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintTop_toBottomOf="@id/subtasksRecycleView" >
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_12sdp"
-                    android:layout_marginTop="@dimen/_15sdp"
-                    android:layout_marginEnd="@dimen/_12sdp"
-                    android:layout_marginBottom="@dimen/_15sdp"
-                    android:fontFamily="@font/ubuntu_regular"
-                    android:gravity="top"
-                    android:hint="Created Date"
-                    android:minHeight="@dimen/_10sdp"
-                    android:padding="8dp"
-                    android:textColor="@color/white"
-                    android:textColorHint="@color/colorTextHint"
-                    android:textSize="@dimen/_13sdp"
-                    android:background="@drawable/bg_white_stroke"
-                    android:id="@+id/create_date"/>
-                <TextView
-                    android:id="@+id/create_time"
-                    android:layout_width="match_parent"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_15sdp"
-                    android:layout_marginEnd="@dimen/_12sdp"
-                    android:layout_marginBottom="@dimen/_15sdp"
-                    android:fontFamily="@font/ubuntu_regular"
-                    android:gravity="top"
-                    android:hint="Created Time"
-                    android:minHeight="@dimen/_10sdp"
-                    android:padding="8dp"
-                    android:textColor="@color/white"
-                    android:textColorHint="@color/colorTextHint"
-                    android:textSize="@dimen/_13sdp"
-                    android:background="@drawable/bg_white_stroke"
-                    />
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/lay_due_date"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintTop_toBottomOf="@id/lay_create_date">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_12sdp"
-                    android:layout_marginTop="@dimen/_15sdp"
-                    android:layout_marginEnd="@dimen/_12sdp"
-                    android:layout_marginBottom="@dimen/_15sdp"
-                    android:fontFamily="@font/ubuntu_regular"
-                    android:gravity="top"
-                    android:hint="Due Date"
-                    android:minHeight="@dimen/_10sdp"
-                    android:padding="8dp"
-                    android:textColor="@color/white"
-                    android:textColorHint="@color/colorTextHint"
-                    android:textSize="@dimen/_13sdp"
-                    android:background="@drawable/bg_white_stroke"
-                    android:id="@+id/due_date"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_15sdp"
-                    android:layout_marginEnd="@dimen/_12sdp"
-                    android:layout_marginBottom="@dimen/_15sdp"
-                    android:fontFamily="@font/ubuntu_regular"
-                    android:gravity="top"
-                    android:hint="Due Time"
-                    android:minHeight="@dimen/_10sdp"
-                    android:padding="8dp"
-                    android:textColor="@color/white"
-                    android:textColorHint="@color/colorTextHint"
-                    android:textSize="@dimen/_13sdp"
-                    android:background="@drawable/bg_white_stroke"
-                    android:id="@+id/due_time"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/layoutAddImage"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_35sdp"
-                android:layout_margin="@dimen/_10sdp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                tools:ignore = "UseCompoundDrawable"
-                app:layout_constraintTop_toBottomOf="@id/lay_due_date"
-                >
-
-                <ImageView
-                    android:layout_width="@dimen/_22sdp"
-                    android:layout_height="@dimen/_22sdp"
-                    android:contentDescription="@string/app_name"
-                    android:src="@drawable/ic_image"
-                    app:tint="@color/colorIcons" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:fontFamily="@font/ubuntu_medium"
-                    android:includeFontPadding="false"
-                    android:text="@string/add_image"
-                    android:textColor="@color/colorIcons"
-                    android:textSize="@dimen/_12ssp"
-                    />
-
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/imglayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@id/layoutAddImage">
-                <ImageView
-                    android:id="@+id/imageTask1"
-                    android:layout_width="@dimen/_100sdp"
-                    android:layout_height="@dimen/_100sdp"
-                    android:adjustViewBounds="true"
-                    android:contentDescription="@string/app_name"
-                    />
-                <ImageView
-                    android:id="@+id/imageTask2"
-                    android:layout_width="@dimen/_100sdp"
-                    android:layout_height="@dimen/_100sdp"
-                    android:adjustViewBounds="true"
-                    android:contentDescription="@string/app_name"
-                    />
-                <ImageView
-                    android:id="@+id/imageTask3"
-                    android:layout_width="@dimen/_100sdp"
-                    android:layout_height="@dimen/_100sdp"
-                    android:adjustViewBounds="true"
-                    android:contentDescription="@string/app_name"
-                    />
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/layoutAudioRecord"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_35sdp"
-                android:layout_margin="@dimen/_10sdp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                tools:ignore = "UseCompoundDrawable"
-                app:layout_constraintTop_toBottomOf="@id/imglayout"
-                >
-
-                <ImageView
-                    android:layout_width="@dimen/_22sdp"
-                    android:layout_height="@dimen/_22sdp"
-                    android:contentDescription="@string/app_name"
-                    android:src="@drawable/ic_baseline_mic_24"
-                    app:tint="@color/colorIcons" />
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:fontFamily="@font/ubuntu_medium"
-                    android:includeFontPadding="false"
-                    android:text="Add Recording"
-                    android:textColor="@color/colorIcons"
-                    android:textSize="@dimen/_12ssp"
-                    />
-
-            </LinearLayout>
-            <TextView
-                android:id="@+id/status_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Incompleted"
-                android:textColor="@color/blue"
-                android:padding="@dimen/_5sdp"
-                android:layout_margin="@dimen/_3sdp"
-                android:textStyle="bold"
-                android:background="@drawable/bg_white_stroke"
-                app:layout_constraintTop_toBottomOf="@id/layoutAudioRecord"
-                app:layout_constraintEnd_toEndOf="@id/layoutAudioRecord"
-                />
-            <LinearLayout
-                android:id="@+id/layoutDeleteTask"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_35sdp"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginEnd="@dimen/_10sdp"
-                android:layout_marginBottom="@dimen/_10sdp"
-                android:gravity="center_vertical"
-                android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@id/layoutAddImage"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="@dimen/_22sdp"
-                    android:layout_height="@dimen/_22sdp"
-                    android:contentDescription="@string/app_name"
-                    android:src="@drawable/ic_delete"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:fontFamily="@font/ubuntu_medium"
-                    android:includeFontPadding="false"
-                    android:text="@string/delete_task"
-                    android:textColor="@color/colorTaskColor3"
-                    android:textSize="@dimen/_13ssp"
-
-                    />
-
-            </LinearLayout>
             <EditText
                 android:id="@+id/inputTaskDesc"
                 android:layout_width="match_parent"
@@ -405,30 +191,232 @@
                 android:padding="8dp"
                 android:textColorHint="@color/colorTextHint"
                 android:textSize="@dimen/_13sdp"
-                app:layout_constraintTop_toBottomOf="@id/inputTaskCategory" />
+                app:layout_constraintTop_toBottomOf="@id/imageTask" />
+
+
+            <LinearLayout
+                android:id="@+id/layoutPriority"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_10sdp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/subTasksRecycleView">
+
+                <TextView
+                    android:id="@+id/textPriority"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/ubuntu_medium"
+                    android:includeFontPadding="false"
+                    android:text="Color for Category"
+                    android:textSize="@dimen/_15ssp" />
+
+                <FrameLayout
+
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <View
+                        android:id="@+id/viewColorLow"
+                        android:layout_width="@dimen/_35sdp"
+                        android:layout_height="@dimen/_35sdp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/background_taskcolor_low" />
+
+                    <ImageView
+                        android:id="@+id/imagePriorityLow"
+                        android:layout_width="@dimen/_35sdp"
+                        android:layout_height="@dimen/_35sdp"
+                        android:layout_gravity="center"
+                        android:contentDescription="@string/app_name"
+                        android:padding="@dimen/_10sdp"
+                        android:src="@drawable/ic_done"
+                        app:tint="@color/white" />
+
+                </FrameLayout>
+
+                <FrameLayout
+
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <View
+                        android:id="@+id/viewColorMedium"
+                        android:layout_width="@dimen/_35sdp"
+                        android:layout_height="@dimen/_35sdp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/background_taskcolor_medium" />
+
+                    <ImageView
+                        android:id="@+id/imagePriorityMedium"
+                        android:layout_width="@dimen/_35sdp"
+                        android:layout_height="@dimen/_35sdp"
+                        android:layout_gravity="center"
+                        android:contentDescription="@string/app_name"
+                        android:padding="@dimen/_10sdp"
+                        android:src="@drawable/ic_done"
+                        app:tint="@color/white" />
+
+                </FrameLayout>
+
+                <FrameLayout
+
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <View
+                        android:id="@+id/viewColorHigh"
+                        android:layout_width="@dimen/_35sdp"
+                        android:layout_height="@dimen/_35sdp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/background_taskcolor_high" />
+
+                    <ImageView
+                        android:id="@+id/imagePriorityHigh"
+                        android:layout_width="@dimen/_35sdp"
+                        android:layout_height="@dimen/_35sdp"
+                        android:layout_gravity="center"
+                        android:contentDescription="@string/app_name"
+                        android:padding="@dimen/_10sdp"
+                        android:src="@drawable/ic_done"
+                        app:tint="@color/white" />
+
+                </FrameLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutAddImage"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_margin="@dimen/_10sdp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/layoutAudioRecord"
+                tools:ignore="UseCompoundDrawable">
+
+                <ImageView
+                    android:layout_width="@dimen/_22sdp"
+                    android:layout_height="@dimen/_22sdp"
+                    android:contentDescription="@string/app_name"
+                    android:src="@drawable/ic_image"
+                    app:tint="@color/colorIcons" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:fontFamily="@font/ubuntu_medium"
+                    android:includeFontPadding="false"
+                    android:text="@string/add_image"
+                    android:textColor="@color/colorIcons"
+                    android:textSize="@dimen/_12ssp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutAudioRecord"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_margin="@dimen/_10sdp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/layoutPriority"
+                tools:ignore="UseCompoundDrawable">
+
+                <ImageView
+                    android:layout_width="@dimen/_22sdp"
+                    android:layout_height="@dimen/_22sdp"
+                    android:contentDescription="@string/app_name"
+                    android:src="@drawable/ic_baseline_mic_24"
+                    app:tint="@color/colorIcons" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:fontFamily="@font/ubuntu_medium"
+                    android:includeFontPadding="false"
+                    android:text="Add Recording"
+                    android:textColor="@color/colorIcons"
+                    android:textSize="@dimen/_12ssp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutAddSubTask"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_margin="@dimen/_10sdp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:visibility="invisible"
+                app:layout_constraintTop_toBottomOf="@id/layoutAddImage"
+                tools:ignore="UseCompoundDrawable">
+
+                <ImageView
+                    android:layout_width="@dimen/_22sdp"
+                    android:layout_height="@dimen/_22sdp"
+                    android:contentDescription="@string/app_name"
+                    android:src="@drawable/ic_list"
+                    app:tint="@color/colorIcons" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:fontFamily="@font/ubuntu_medium"
+                    android:includeFontPadding="false"
+                    android:text="Add Subtask"
+                    android:textColor="@color/colorIcons"
+                    android:textSize="@dimen/_12ssp" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/layoutStatus"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_margin="@dimen/_10sdp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:visibility="invisible"
+                app:layout_constraintTop_toBottomOf="@id/layoutAddSubTask"
+                tools:ignore="UseCompoundDrawable">
+
+                <CheckBox
+                    android:id="@+id/checkBoxStatus"
+                    android:layout_width="@dimen/_22sdp"
+                    android:layout_height="@dimen/_22sdp">
+                </CheckBox>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:fontFamily="@font/ubuntu_medium"
+                    android:includeFontPadding="false"
+                    android:text="Mark Entire Task as Complete"
+                    android:textColor="@color/colorIcons"
+                    android:textSize="@dimen/_12ssp" />
+
+            </LinearLayout>
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
-
-    <LinearLayout
-        android:id="@+id/layoutBottomBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@drawable/background_bottombar"
-        app:behavior_peekHeight="@dimen/_40sdp"
-        app:layout_behavior="@string/bottom_sheet_behavior">
-
     <TextView
-        android:id="@+id/textMore"
+        android:id="@+id/textAddUpdate"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_40sdp"
-        android:fontFamily="@font/ubuntu_medium"
         android:gravity="center"
+        android:background="@color/blue2"
+        android:layout_alignParentBottom="true"
         android:includeFontPadding="false"
-        android:text="@string/add_task"
+        android:text="Add Task"
         android:textSize="@dimen/_13ssp"
-        android:textColor="@color/white"
         />
-    </LinearLayout>
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</RelativeLayout>

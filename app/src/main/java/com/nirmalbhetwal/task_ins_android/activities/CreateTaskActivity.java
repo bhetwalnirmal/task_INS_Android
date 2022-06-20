@@ -2,30 +2,30 @@ package com.nirmalbhetwal.task_ins_android.activities;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.content.ContextWrapper;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.GradientDrawable;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.InputType;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -34,29 +34,36 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.nirmalbhetwal.task_ins_android.Categories;
 import com.nirmalbhetwal.task_ins_android.R;
-import com.nirmalbhetwal.task_ins_android.TaskCompleted;
-import com.nirmalbhetwal.task_ins_android.db.TableTaskDB;
-import com.nirmalbhetwal.task_ins_android.entities.TableTask;
+import com.nirmalbhetwal.task_ins_android.adapter.SubTaskListAdapter;
+import com.nirmalbhetwal.task_ins_android.adapter.TaskListAdapter;
+import com.nirmalbhetwal.task_ins_android.database.TableTaskDB;
+import com.nirmalbhetwal.task_ins_android.listeners.TableSubTaskListeners;
+import com.nirmalbhetwal.task_ins_android.listeners.TableTaskListeners;
+import com.nirmalbhetwal.task_ins_android.model.TableSubTask;
+import com.nirmalbhetwal.task_ins_android.model.TableTask;
+import com.nirmalbhetwal.task_ins_android.utils.SwipeToDeleteCallback;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
-public class CreateTaskActivity  extends AppCompatActivity {
+public class CreateTaskActivity extends AppCompatActivity implements TableSubTaskListeners {
+
     private EditText inputTaskTitle, inputTaskDesc ,inputTaskCat;
-    private TextView textCreateDateTime,create_date,create_time,due_date,due_time,status_button;
+    private TextView textCreateDateTime;
     private View viewCategoryIndicator;
     private String selectedTaskColor;
     private ImageView imageTableTask;
@@ -64,11 +71,7 @@ public class CreateTaskActivity  extends AppCompatActivity {
     private TableTask alreadyAvailableTableTask;
     private AlertDialog dialogDeleteTask;
     private AlertDialog dialogAudioRecord;
-    private Spinner spinner;
-    private Categories selectedCategory;
-    private Spinner taskSpinner;
     private String audioFilePath;
-    private TaskCompleted taskCompleted;
     private String taskProgress;
     private MediaRecorder mediaRecorder;
     private MediaPlayer mediaPlayer;
@@ -78,89 +81,42 @@ public class CreateTaskActivity  extends AppCompatActivity {
     private TextView tvRecordingPath;
     private ImageView ivSimpleBq;
     private boolean isRecording=false;
-    private boolean isPlaving=false;
+    private boolean isPlaying =false;
     private static final int REQUEST_AUDIO_PERMISSION = 101;
     private static final int REQUEST_CODE_STORAGE_PERMISSION = 1;
     private static final int REQUEST_CODE_SELECT_IMAGE = 2;
     private static final int GALLERY_REQUEST = 100;
-    TimePickerDialog timePickerDialog;
-    DatePickerDialog datePickerDialog;
-    String statustxt,duetime,duedate;
+    private TextView addUpdateButton;
+
+
+    public final static int REQUEST_CODE_ADD_SUBTASK = 1;
+    public final static int REQUEST_CODE_UPDATE_SUBTASK = 2;
+    public final static int REQUEST_CODE_SHOW_SUBTASKS = 3;
+
+    private RecyclerView tasksRecyclerView;
+    private List<TableSubTask> tableSubTasksList;
+    private SubTaskListAdapter subTaskListAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_task);
 
-        TaskCompleted.initCompleted();
-        Categories.initCategories();
-
         ImageView imageBack = findViewById(R.id.imageBack);
         imageBack.setOnClickListener(v -> onBackPressed());
 
+        ImageView imageDelete = findViewById(R.id.imageSave);
+        imageDelete.setOnClickListener(v -> showDeleteDialog());
 
-        due_time = findViewById(R.id.due_time);
-        due_date = findViewById(R.id.due_date);
-        status_button = findViewById(R.id.status_button);
-        create_time = findViewById(R.id.create_time);
-        create_date = findViewById(R.id.create_date);
         inputTaskTitle = findViewById(R.id.inputTaskTitle);
         inputTaskCat = findViewById(R.id.inputTaskCategory);
         inputTaskDesc = findViewById(R.id.inputTaskDesc);
         textCreateDateTime = findViewById(R.id.textCreateDateTime);
         viewCategoryIndicator = findViewById(R.id.viewCategoryIndicator);
-        status_button.setText("Incompleted");
-        statustxt="Incompleted";
-        status_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                status_button.setText("Completed");
-                statustxt="Completed";
-            }
-        });
-        due_date.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // calender class's instance and get current date , month and year from calender
-                final Calendar c = Calendar.getInstance();
-                int mYear = c.get(Calendar.YEAR); // current year
-                int mMonth = c.get(Calendar.MONTH); // current month
-                int mDay = c.get(Calendar.DAY_OF_MONTH); // current day
-                // date picker dialog
-                datePickerDialog = new DatePickerDialog(CreateTaskActivity.this,
-                        new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                            public void onDateSet(android.widget.DatePicker view, int year,
-                                                  int monthOfYear, int dayOfMonth) {
-                                // set day of month , month and year value in the edit text
-                                due_date.setText(dayOfMonth + "-"
-                                        + (monthOfYear + 1) + "-" + year);
-                        duedate=dayOfMonth + "-"
-                                + (monthOfYear + 1) + "-" + year;
-                            }
-                        }, mYear, mMonth, mDay);
-                datePickerDialog.show();
-            }
-        });
-        due_time.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Use the current time as the default values for the picker
-                final Calendar c = Calendar.getInstance();
-                int hour = c.get(Calendar.HOUR_OF_DAY);
-                int minute = c.get(Calendar.MINUTE);
-                // Create a new instance of TimePickerDialog
-                timePickerDialog = new TimePickerDialog(CreateTaskActivity.this, new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                        due_time.setText( selectedHour + ":" + selectedMinute);
-                        duetime=selectedHour + ":" + selectedMinute;
-                    }
-                }, hour, minute, true);//Yes 24 hour time
-                timePickerDialog.setTitle("Select Time");
-                timePickerDialog.show();
-            }
-        });
+        imageTableTask = findViewById(R.id.imageTask);
+        addUpdateButton = findViewById(R.id.textAddUpdate);
 
+        addUpdateButton.setOnClickListener(view -> saveTask());
         textCreateDateTime.setText(
                 new SimpleDateFormat("EEEE, dd MMMM yyyy HH:mm a", Locale.getDefault())
                         .format(new Date())
@@ -170,11 +126,20 @@ public class CreateTaskActivity  extends AppCompatActivity {
         selectedImageBase64 = "";
         taskProgress = "Incomplete";
 
+        tasksRecyclerView = findViewById(R.id.subTasksRecycleView);
+        tasksRecyclerView.setLayoutManager(
+                new LinearLayoutManager(CreateTaskActivity.this)
+        );
+        tableSubTasksList = new ArrayList<>();
+        subTaskListAdapter = new SubTaskListAdapter(tableSubTasksList, CreateTaskActivity.this);
+        tasksRecyclerView.setAdapter(subTaskListAdapter);
 
+        enableSwipeToDeleteAndUndo();
 
         if (getIntent().getBooleanExtra("isViewUpdate", false)) {
             alreadyAvailableTableTask = (TableTask) getIntent().getSerializableExtra("tableTask");
             setViewOrUpdateTableTask();
+            getTask(REQUEST_CODE_SHOW_SUBTASKS, false);
         }
 
         if (getIntent().getBooleanExtra("isFromQuickAction", false)) {
@@ -190,55 +155,25 @@ public class CreateTaskActivity  extends AppCompatActivity {
         }
 
         initMore();
-//        setCategoryIndicatorColor();
+        setCategoryIndicatorColor();
     }
 
     private void setViewOrUpdateTableTask() {
         inputTaskTitle.setText(alreadyAvailableTableTask.getTitle());
-        inputTaskDesc.setText(alreadyAvailableTableTask.getTaskDesc());
+        inputTaskDesc.setText(alreadyAvailableTableTask.getTaskText());
         inputTaskCat.setText(alreadyAvailableTableTask.getCategory());
-
-        ArrayList<TaskCompleted> taskCompleteds = TaskCompleted.getTaskCompletedArrayList();
-        for (TaskCompleted taskCompleted : taskCompleteds) {
-            if (taskCompleted.getCompleted().equals(alreadyAvailableTableTask.getTaskStatus())){
-                this.taskCompleted = taskCompleted;
-            }
-        }
-        if (taskCompleted != null){
-            taskSpinner.setSelection(taskCompleteds.indexOf(selectedCategory));
-            taskSpinner.setVisibility(View.VISIBLE);
-
-        }else
-        {
-            taskSpinner.setSelection(1);
-            taskSpinner.setVisibility(View.VISIBLE);
-        }
-/*
-        ArrayList<Categories> categories = Categories.getCategoriesArrayList();
-        for (Categories category : categories) {
-            if (category.getCatName().equals(alreadyAvailableTableTask.getCategory())) {
-                this.selectedCategory = category;
-            }
-        }
-        if (selectedCategory != null) {
-            spinner.setSelection(categories.indexOf(selectedCategory));
-        } else {
-            spinner.setSelection(0);
-        }
-*/
-        textCreateDateTime.setText(alreadyAvailableTableTask.getCreateDate());
-        // TODO: 17/06/2022 Here we are taking just one image
-        if (alreadyAvailableTableTask.getImagePath() != null && !alreadyAvailableTableTask.getImagePath().split(",")[0].trim().isEmpty()) {
+        addUpdateButton.setText("Update Task");
+        findViewById(R.id.layoutStatus).setVisibility(View.VISIBLE);
+        textCreateDateTime.setText(alreadyAvailableTableTask.getCreateDateTime());
+        if (alreadyAvailableTableTask.getImagePath() != null && !alreadyAvailableTableTask.getImagePath().trim().isEmpty()) {
             // decode base64 string
-            // TODO: 17/06/2022 Here we are taking just one image
-            byte[] bytes = Base64.decode(alreadyAvailableTableTask.getImagePath().split(",")[0], Base64.DEFAULT);
+            byte[] bytes = Base64.decode(alreadyAvailableTableTask.getImagePath(), Base64.DEFAULT);
             // Initialize bitmap
             Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
             // set bitmap on imageView
             imageTableTask.setImageBitmap(bitmap);
             imageTableTask.setVisibility(View.VISIBLE);
-            // TODO: 17/06/2022 Here we are taking just one image
-            selectedImageBase64 = alreadyAvailableTableTask.getImagePath().split(",")[0];
+            selectedImageBase64 = alreadyAvailableTableTask.getImagePath();
         }
     }
 
@@ -260,21 +195,17 @@ public class CreateTaskActivity  extends AppCompatActivity {
         tableTask.setTitle(inputTaskTitle.getText().toString());
         tableTask.setCategory(inputTaskCat.getText().toString());
         // tableTask.setCategory(selectedCategory.getCatName());
-        tableTask.setTaskDesc(inputTaskDesc.getText().toString());
-        tableTask.setCreateDate(textCreateDateTime.getText().toString());
-        tableTask.setDueDate(duedate);
-        tableTask.setDueTime(duetime);
-        tableTask.setTaskStatus(statustxt);
-        // TODO: 17/06/2022 please pass string[] value uncomment below line
-//        tableTask.setImagePath(selectedImageBase64);
-        tableTask.setTaskStatus(taskProgress);
+        tableTask.setTaskText(inputTaskDesc.getText().toString());
+        tableTask.setCreateDateTime(textCreateDateTime.getText().toString());
+        tableTask.setColor(selectedTaskColor);
+        tableTask.setImagePath(selectedImageBase64);
+        tableTask.setCompleted(taskProgress);
 
         if (alreadyAvailableTableTask != null) {
             tableTask.setId(alreadyAvailableTableTask.getId());
         }
 
-        // ROOM does not allow database operation on the main thread
-        // Use of Async tableTask to bypass it.
+        // Use of Async task to access data in room database.
 
         @SuppressLint("StaticFieldLeak")
         class SaveTask extends AsyncTask<Void, Void, Void> {
@@ -283,8 +214,6 @@ public class CreateTaskActivity  extends AppCompatActivity {
                 TableTaskDB.getDatabase(getApplicationContext()).tableTaskDao().insertTableTask(tableTask);
                 return null;
 
-//                TaskDatabase.getTaskDatabase(getApplicationContext()).taskDao().insertTask(tableTask);
-//                return null;
             }
 
             @Override
@@ -299,16 +228,56 @@ public class CreateTaskActivity  extends AppCompatActivity {
         new SaveTask().execute();
     }
 
-
     private void initMore() {
 
-        findViewById(R.id.textMore).setOnClickListener(new View.OnClickListener() {
+        final ImageView imagePriorityLow = findViewById(R.id.imagePriorityLow);
+        final ImageView imagePriorityMedium = findViewById(R.id.imagePriorityMedium);
+        final ImageView imagePriorityHigh = findViewById(R.id.imagePriorityHigh);
+
+        findViewById(R.id.viewColorLow).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveTask();
-
+                selectedTaskColor = "#FF018786";
+                imagePriorityLow.setImageResource(R.drawable.ic_done);
+                imagePriorityMedium.setImageResource(0);
+                imagePriorityHigh.setImageResource(0);
+                setCategoryIndicatorColor();
             }
         });
+        findViewById(R.id.viewColorMedium).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectedTaskColor = "#FDBE3B";
+                imagePriorityLow.setImageResource(0);
+                imagePriorityMedium.setImageResource(R.drawable.ic_done);
+                imagePriorityHigh.setImageResource(0);
+                setCategoryIndicatorColor();
+            }
+        });
+        findViewById(R.id.viewColorHigh).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectedTaskColor = "#FF4842";
+                imagePriorityLow.setImageResource(0);
+                imagePriorityMedium.setImageResource(0);
+                imagePriorityHigh.setImageResource(R.drawable.ic_done);
+                setCategoryIndicatorColor();
+            }
+        });
+
+        if (alreadyAvailableTableTask != null && alreadyAvailableTableTask.getColor() != null && !alreadyAvailableTableTask.getColor().trim().isEmpty()) {
+            switch (alreadyAvailableTableTask.getColor()) {
+                case "#FF018786":
+                    findViewById(R.id.viewColorLow).performClick();
+                    break;
+                case "#FDBE3B":
+                    findViewById(R.id.viewColorMedium).performClick();
+                    break;
+                case "#FF4842":
+                    findViewById(R.id.viewColorHigh).performClick();
+                    break;
+            }
+        }
 
         findViewById(R.id.layoutAddImage).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -329,21 +298,69 @@ public class CreateTaskActivity  extends AppCompatActivity {
         findViewById(R.id.layoutAudioRecord).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 showAudioDialog();
             }
         });
 
+
+        findViewById(R.id.textAddUpdate).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                saveTask();
+            }
+        });
+
         if (alreadyAvailableTableTask != null) {
-            findViewById(R.id.layoutDeleteTask).setVisibility(View.VISIBLE);
-            findViewById(R.id.layoutDeleteTask).setOnClickListener(new View.OnClickListener() {
+            findViewById(R.id.layoutAddSubTask).setVisibility(View.VISIBLE);
+            findViewById(R.id.layoutAddSubTask).setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
-                    showDeleteDialog();
+                public void onClick(View view) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(CreateTaskActivity.this);
+                    builder.setTitle("Add Subtask");
+
+                    // Set up the input
+                    final EditText input = new EditText(CreateTaskActivity.this);
+                    // Specify the type of input expected; this, for example,
+                    input.setInputType(InputType.TYPE_CLASS_TEXT);
+                    builder.setView(input);
+
+                    // Set up the buttons
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            if (input.getText().toString() != "") {
+                                final TableSubTask tableSubTask = new TableSubTask();
+
+                                tableSubTask.setTitle(input.getText().toString());
+                                tableSubTask.setCatId(alreadyAvailableTableTask.getId());
+                                tableSubTask.setStatus(0);
+
+                                @SuppressLint("StaticFieldLeak")
+                                class SaveSubTask extends AsyncTask<Void, Void, Void> {
+                                    @Override
+                                    protected Void doInBackground(Void... voids) {
+                                        TableTaskDB.getDatabase(getApplicationContext()).tableTaskDao().insertSubTaskTable(tableSubTask);
+                                        return null;
+
+                                    }
+                                }
+
+                                new SaveSubTask().execute();
+
+                            }
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+
+                    builder.show();
                 }
             });
-
-
         }
     }
 
@@ -422,7 +439,7 @@ public class CreateTaskActivity  extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
 
-                    if (!isPlaving){
+                    if (!isPlaying){
                         if (audioFilePath!=null)
                         {
                             try {
@@ -443,7 +460,7 @@ public class CreateTaskActivity  extends AppCompatActivity {
                         }
 
                         mediaPlayer.start();
-                        isPlaving = true;
+                        isPlaying = true;
                     }
 
                     else {
@@ -451,7 +468,7 @@ public class CreateTaskActivity  extends AppCompatActivity {
                         mediaPlayer.release();
                         //  mediaPlayer = null;
                         // mediaPlayer = new MediaPlayer();
-                        isPlaving = false;
+                        isPlaying = false;
                     }
 
                 }
@@ -516,12 +533,16 @@ public class CreateTaskActivity  extends AppCompatActivity {
         dialogDeleteTask.show();
     }
 
+    private void setCategoryIndicatorColor() {
+        GradientDrawable gradientDrawable = (GradientDrawable) viewCategoryIndicator.getBackground();
+        gradientDrawable.setColor(Color.parseColor(selectedTaskColor));
+    }
 
     public void selectImage() {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), 3);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), REQUEST_CODE_SELECT_IMAGE);
     }
 
     @Override
@@ -557,7 +578,6 @@ public class CreateTaskActivity  extends AppCompatActivity {
             if (data != null) {
                 Uri selectedImageUri = data.getData();
                 if (selectedImageUri != null) {
-                    // TODO: 17/06/2022 Handle multiple image selected 
                     try {
                         InputStream inputStream = getContentResolver().openInputStream(selectedImageUri);
                         Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
@@ -573,6 +593,54 @@ public class CreateTaskActivity  extends AppCompatActivity {
         }
     }
 
+    // Checking if the task list is empty , which indicates that the app just started since we have
+    // Declared it as a global variable
+    // But for this case we are adding all the notes from the database and notify the adapter about
+    // The new loaded Dataset
+    private void getTask (final int requestCode, final boolean isSubTaskDeleted) {
+
+        @SuppressLint("StaticFieldLeak")
+        class GetTask_HS extends AsyncTask<Void, Void, List<TableSubTask>>{
+
+            @Override
+            protected List<TableSubTask> doInBackground(Void... voids) {
+
+                return TableTaskDB
+                        .getDatabase(getApplicationContext())
+                        .tableTaskDao().getAllSubTask(alreadyAvailableTableTask.getId());
+            }
+
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            protected void onPostExecute(List<TableSubTask> tableSubTasks){
+                super.onPostExecute(tableSubTasks);
+
+                if (requestCode == REQUEST_CODE_SHOW_SUBTASKS){
+                    tableSubTasksList.clear();
+                    tableSubTasksList.addAll(tableSubTasks);
+                    subTaskListAdapter.notifyDataSetChanged();
+                } else if (requestCode == REQUEST_CODE_ADD_SUBTASK) {
+                    tableSubTasks.add(0, tableSubTasks.get(0));
+                    subTaskListAdapter.notifyItemInserted(0);
+                    tasksRecyclerView.smoothScrollToPosition(0);
+                } else if (requestCode == REQUEST_CODE_UPDATE_SUBTASK){
+//                    tableSubTasksList.remove(taskClickedPosition);
+//
+//                    if (isTaskDeleted){
+//                        tableTaskAdapters.notifyItemRemoved(taskClickedPosition);
+//                    } else{
+//                        tableTasksList.add(taskClickedPosition, tableTasks.get(taskClickedPosition));
+//                        tableTaskAdapters.notifyItemChanged(taskClickedPosition);
+//
+//                    }
+                }
+                Log.d("My_TableTasks", tableSubTasksList.toString());
+            }
+        }
+        new GetTask_HS().execute();
+
+    }
+
     private String encode(Uri imageUri) throws FileNotFoundException {
         final InputStream imageStream = getContentResolver().openInputStream(imageUri);
         final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
@@ -585,6 +653,28 @@ public class CreateTaskActivity  extends AppCompatActivity {
         bm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] b = baos.toByteArray();
         String encImage = Base64.encodeToString(b, Base64.DEFAULT);
+
         return encImage;
+
+    }
+
+    private void enableSwipeToDeleteAndUndo() {
+        SwipeToDeleteCallback swipeToDeleteCallback = new SwipeToDeleteCallback(this) {
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+                final int position = viewHolder.getAdapterPosition();
+                subTaskListAdapter.removeItem(position, CreateTaskActivity.this);
+
+            }
+        };
+
+        ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeToDeleteCallback);
+        itemTouchhelper.attachToRecyclerView(tasksRecyclerView);
+    }
+
+    @Override
+    public void onTableSubTaskClicked(TableSubTask tableTask, int position) {
+        // TODO: 20/06/2022
+        Toast.makeText(getApplicationContext(), position, Toast.LENGTH_SHORT).show();
     }
 }

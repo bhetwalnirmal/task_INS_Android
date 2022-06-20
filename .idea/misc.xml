@@ -24,23 +24,32 @@
         <entry key="..\:/lambton/term2/android/Project/app/src/main/res/drawable/ic_image.xml" value="0.191" />
         <entry key="..\:/lambton/term2/android/Project/app/src/main/res/drawable/ic_search.xml" value="0.191" />
         <entry key="..\:/lambton/term2/android/Project/app/src/main/res/drawable/school.xml" value="0.1" />
-        <entry key="..\:/lambton/term2/android/Project/app/src/main/res/drawable/status_complete_indicatior.xml" value="0.1345" />
-        <entry key="..\:/lambton/term2/android/Project/app/src/main/res/drawable/status_incomplete_indicatior.xml" value="0.1345" />
         <entry key="..\:/lambton/term2/android/Project/app/src/main/res/layout/activity_create_task.xml" value="0.21" />
-        <entry key="..\:/lambton/term2/android/Project/app/src/main/res/layout/activity_main.xml" value="0.2" />
-        <entry key="..\:/lambton/term2/android/Project/app/src/main/res/layout/adapter_subtask_layout.xml" value="0.17074275362318841" />
+        <entry key="..\:/lambton/term2/android/Project/app/src/main/res/layout/activity_main.xml" value="0.15" />
         <entry key="..\:/lambton/term2/android/Project/app/src/main/res/layout/content_main.xml" value="0.17074275362318841" />
-        <entry key="..\:/lambton/term2/android/Project/app/src/main/res/layout/fragment_first.xml" value="0.1578125" />
-        <entry key="..\:/lambton/term2/android/Project/app/src/main/res/layout/fragment_second.xml" value="0.1578125" />
         <entry key="..\:/lambton/term2/android/Project/app/src/main/res/layout/item_container_task.xml" value="0.17074275362318841" />
         <entry key="..\:/lambton/term2/android/Project/app/src/main/res/layout/item_selected_view.xml" value="0.1" />
         <entry key="..\:/lambton/term2/android/Project/app/src/main/res/layout/layout_audio_dialoug.xml" value="0.1" />
         <entry key="..\:/lambton/term2/android/Project/app/src/main/res/layout/layout_delete_dialoug.xml" value="0.1" />
-        <entry key="..\:/lambton/term2/android/Project/app/src/main/res/layout/spinner_adapter.xml" value="0.17074275362318841" />
-        <entry key="..\:/lambton/term2/android/Project/app/src/main/res/layout/spinner_completed.xml" value="0.17074275362318841" />
         <entry key="..\:/lambton/term2/android/Project/app/src/main/res/layout/spinner_completed_itemview.xml" value="0.17074275362318841" />
         <entry key="..\:/lambton/term2/android/Project/app/src/main/res/menu/menu_main.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.3119735717773438" />
+        <entry key="app/src/main/res/drawable/customborder.xml" value="0.119" />
+        <entry key="app/src/main/res/layout/activity_create_task.xml" value="0.16210739614994935" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/adapter_subtask_layout.xml" value="0.16210739614994935" />
+        <entry key="app/src/main/res/layout/content_main.xml" value="0.16210739614994935" />
+        <entry key="app/src/main/res/layout/fragment_first.xml" value="0.16210739614994935" />
+        <entry key="app/src/main/res/layout/fragment_second.xml" value="0.16210739614994935" />
+        <entry key="app/src/main/res/layout/item_container_subtask.xml" value="0.15425531914893617" />
+        <entry key="app/src/main/res/layout/item_container_task.xml" value="0.16210739614994935" />
+        <entry key="app/src/main/res/layout/item_selected_view.xml" value="0.16210739614994935" />
+        <entry key="app/src/main/res/layout/layout_audio_dialoug.xml" value="0.1793087032669825" />
+        <entry key="app/src/main/res/layout/layout_bottombar.xml" value="0.16210739614994935" />
+        <entry key="app/src/main/res/layout/layout_delete_dialoug.xml" value="0.15602836879432624" />
+        <entry key="app/src/main/res/layout/spinner_adapter.xml" value="0.16210739614994935" />
+        <entry key="app/src/main/res/layout/spinner_completed.xml" value="0.16210739614994935" />
+        <entry key="app/src/main/res/layout/spinner_completed_itemview.xml" value="0.16210739614994935" />
+        <entry key="app/src/main/res/layout/time_picker_fragement.xml" value="0.15081521739130435" />
         <entry key="app/src/main/res/menu/menu_main.xml" value="0.13020833333333334" />
       </map>
     </option>
