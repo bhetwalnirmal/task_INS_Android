@@ -186,6 +186,13 @@ public class CreateTaskActivity extends AppCompatActivity implements DatePickerD
             selectedImageBase64 = alreadyAvailableTableTask.getImagePath();
         }
         tvDueDate.setText(alreadyAvailableTableTask.getSetDueDate());
+        CheckBox checkBox = findViewById(R.id.checkBoxStatus);
+        if (alreadyAvailableTableTask.getCompleted() == "Completed") {
+            checkBox.setChecked(true);
+        }
+        else {
+            checkBox.setChecked(false);
+        }
     }
 
 
