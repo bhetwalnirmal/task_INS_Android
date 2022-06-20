@@ -155,7 +155,6 @@ public class SubTaskListAdapter extends RecyclerView.Adapter<SubTaskListAdapter.
             }
         }
         new DeleteSubTaskFunc().execute();
-
     }
 
 
