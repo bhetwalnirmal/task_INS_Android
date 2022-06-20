@@ -762,6 +762,7 @@ public class CreateTaskActivity extends AppCompatActivity implements DatePickerD
         this.dueDatePicker = datePicker;
         // get the calendar instance
         Calendar calendar = Calendar.getInstance();
+        // initialize the calendar by year, month, day
         calendar.set(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth());
 
         // create a simple date format
