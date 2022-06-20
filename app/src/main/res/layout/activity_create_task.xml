@@ -364,6 +364,7 @@
                     app:tint="@color/colorIcons" />
 
                 <TextView
+                    android:id="@+id/tvDueDatePicker"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_10sdp"
