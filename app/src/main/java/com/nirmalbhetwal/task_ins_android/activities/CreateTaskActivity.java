@@ -34,6 +34,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
@@ -46,6 +47,7 @@ import com.nirmalbhetwal.task_ins_android.listeners.TableSubTaskListeners;
 import com.nirmalbhetwal.task_ins_android.listeners.TableTaskListeners;
 import com.nirmalbhetwal.task_ins_android.model.TableSubTask;
 import com.nirmalbhetwal.task_ins_android.model.TableTask;
+import com.nirmalbhetwal.task_ins_android.utils.SwipeToDeleteCallback;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -132,6 +134,8 @@ public class CreateTaskActivity extends AppCompatActivity implements TableSubTas
         subTaskListAdapter = new SubTaskListAdapter(tableSubTasksList, CreateTaskActivity.this);
         tasksRecyclerView.setAdapter(subTaskListAdapter);
 
+        enableSwipeToDeleteAndUndo();
+
         if (getIntent().getBooleanExtra("isViewUpdate", false)) {
             alreadyAvailableTableTask = (TableTask) getIntent().getSerializableExtra("tableTask");
             setViewOrUpdateTableTask();
@@ -159,7 +163,7 @@ public class CreateTaskActivity extends AppCompatActivity implements TableSubTas
         inputTaskDesc.setText(alreadyAvailableTableTask.getTaskText());
         inputTaskCat.setText(alreadyAvailableTableTask.getCategory());
         addUpdateButton.setText("Update Task");
-
+        findViewById(R.id.layoutStatus).setVisibility(View.VISIBLE);
         textCreateDateTime.setText(alreadyAvailableTableTask.getCreateDateTime());
         if (alreadyAvailableTableTask.getImagePath() != null && !alreadyAvailableTableTask.getImagePath().trim().isEmpty()) {
             // decode base64 string
@@ -340,17 +344,10 @@ public class CreateTaskActivity extends AppCompatActivity implements TableSubTas
                                         return null;
 
                                     }
-
-                                    @Override
-                                    protected void onPostExecute(Void aVoid) {
-                                        super.onPostExecute(aVoid);
-                                        Intent intent = new Intent();
-                                        setResult(RESULT_OK, intent);
-                                        finish();
-                                    }
                                 }
 
                                 new SaveSubTask().execute();
+
                             }
                         }
                     });
@@ -659,6 +656,20 @@ public class CreateTaskActivity extends AppCompatActivity implements TableSubTas
 
         return encImage;
 
+    }
+
+    private void enableSwipeToDeleteAndUndo() {
+        SwipeToDeleteCallback swipeToDeleteCallback = new SwipeToDeleteCallback(this) {
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+                final int position = viewHolder.getAdapterPosition();
+                subTaskListAdapter.removeItem(position, CreateTaskActivity.this);
+
+            }
+        };
+
+        ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeToDeleteCallback);
+        itemTouchhelper.attachToRecyclerView(tasksRecyclerView);
     }
 
     @Override

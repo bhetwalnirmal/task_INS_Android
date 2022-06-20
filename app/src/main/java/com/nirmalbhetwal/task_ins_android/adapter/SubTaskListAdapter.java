@@ -1,6 +1,9 @@
 package com.nirmalbhetwal.task_ins_android.adapter;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.nirmalbhetwal.task_ins_android.R;
+import com.nirmalbhetwal.task_ins_android.database.TableTaskDB;
 import com.nirmalbhetwal.task_ins_android.listeners.TableSubTaskListeners;
 import com.nirmalbhetwal.task_ins_android.model.TableSubTask;
 
@@ -116,6 +120,23 @@ public class SubTaskListAdapter extends RecyclerView.Adapter<SubTaskListAdapter.
 //            }
 //        }, 500);
 //    }
+
+    public void removeItem(int position, Context context) {
+        @SuppressLint("StaticFieldLeak")
+        class DeleteSubTaskFunc extends AsyncTask<Void, Void, Void> {
+            @Override
+            protected Void doInBackground(Void... voids) {
+                TableTaskDB.getDatabase(context).tableTaskDao()
+                        .deleteSubTask(tablesSubTasks.get(position));
+                return null;
+            }
+        }
+        new DeleteSubTaskFunc().execute();
+        tablesSubTasks.remove(position);
+        notifyItemRemoved(position);
+
+
+    }
 
     public void cancelTimer(){
         if(timer != null){
