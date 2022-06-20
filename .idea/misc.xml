@@ -43,8 +43,10 @@
         <entry key="app/src/main/res/layout/activity_create_task.xml" value="0.17135416666666667" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.3119735717773438" />
         <entry key="app/src/main/res/layout/adapter_subtask_layout.xml" value="0.17135416666666667" />
+        <entry key="app/src/main/res/layout/content_main.xml" value="0.3578125" />
         <entry key="app/src/main/res/layout/item_container_subtask.xml" value="0.17135416666666667" />
         <entry key="app/src/main/res/layout/item_container_task.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/layout_audio_dialoug.xml" value="0.1" />
         <entry key="app/src/main/res/menu/menu_main.xml" value="0.13020833333333334" />
       </map>
     </option>

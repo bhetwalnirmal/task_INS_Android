@@ -458,23 +458,33 @@ public class CreateTaskActivity extends AppCompatActivity implements TableSubTas
                     } else {
                         if (!isRecording){
                             isRecording = true;
-                            mediaRecorder = new MediaRecorder();
+                            mediaRecorder=new MediaRecorder();
                             mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
                             mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-                            mediaRecorder.setOutputFile(getRecordingFilePath());
-                            audioFilePath = getRecordingFilePath();
+                            mediaRecorder.setOutputFile(getRecordingPath());
                             mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
                             try {
                                 mediaRecorder.prepare();
+                                mediaRecorder.start();
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
-                            mediaRecorder.start();
+
+                            Toast.makeText(CreateTaskActivity.this,"Recording Has Started",Toast.LENGTH_LONG).show();
+
+//                            try {
+//                                mediaRecorder.prepare();
+//                            } catch (IOException e) {
+//                                e.printStackTrace();
+//                            }
+                            //mediaRecorder.start();
                         }
                         else {
+                            isRecording = false;
                             mediaRecorder.stop();
                             mediaRecorder.release();
                             mediaRecorder=null;
+                            Toast.makeText(CreateTaskActivity.this,"Recording Has Stopped",Toast.LENGTH_LONG).show();
                         }
 
                     }
@@ -486,27 +496,17 @@ public class CreateTaskActivity extends AppCompatActivity implements TableSubTas
                 public void onClick(View v) {
 
                     if (!isPlaying){
-                        if (audioFilePath!=null)
-                        {
-                            try {
-                                mediaPlayer.setDataSource(getRecordingFilePath());
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        else {
-
-                            Toast.makeText(getApplicationContext(), "No Recording", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
                         try {
+                            mediaPlayer=new MediaPlayer();
+                            mediaPlayer.setDataSource(getRecordingPath());
                             mediaPlayer.prepare();
-                        } catch (IOException e) {
+                            mediaPlayer.start();
+                            Toast.makeText(CreateTaskActivity.this,"recording is Playing ",Toast.LENGTH_LONG).show();
+                        }catch (Exception e){
                             e.printStackTrace();
                         }
-
-                        mediaPlayer.start();
                         isPlaying = true;
+
                     }
 
                     else {
@@ -529,7 +529,13 @@ public class CreateTaskActivity extends AppCompatActivity implements TableSubTas
         dialogAudioRecord.show();
     }
 
+    private String getRecordingPath(){
+        ContextWrapper contextWrapper=new ContextWrapper(getApplicationContext());
+        File musicDirectory=contextWrapper.getExternalFilesDir(Environment.DIRECTORY_MUSIC);
+        File file=new File(musicDirectory,"testRecording"+".mp3");
+        return file.getPath();
 
+    }
 
     private void showDeleteDialog() {
         if (dialogDeleteTask == null) {
