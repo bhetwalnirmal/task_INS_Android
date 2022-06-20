@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.text.InputType;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,9 +34,16 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.nirmalbhetwal.task_ins_android.R;
+import com.nirmalbhetwal.task_ins_android.adapter.SubTaskListAdapter;
+import com.nirmalbhetwal.task_ins_android.adapter.TaskListAdapter;
 import com.nirmalbhetwal.task_ins_android.database.TableTaskDB;
+import com.nirmalbhetwal.task_ins_android.listeners.TableSubTaskListeners;
+import com.nirmalbhetwal.task_ins_android.listeners.TableTaskListeners;
 import com.nirmalbhetwal.task_ins_android.model.TableSubTask;
 import com.nirmalbhetwal.task_ins_android.model.TableTask;
 
@@ -45,10 +53,12 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
-public class CreateTaskActivity extends AppCompatActivity {
+public class CreateTaskActivity extends AppCompatActivity implements TableSubTaskListeners {
 
     private EditText inputTaskTitle, inputTaskDesc ,inputTaskCat;
     private TextView textCreateDateTime;
@@ -75,6 +85,15 @@ public class CreateTaskActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_SELECT_IMAGE = 2;
     private static final int GALLERY_REQUEST = 100;
     private TextView addUpdateButton;
+
+
+    public final static int REQUEST_CODE_ADD_SUBTASK = 1;
+    public final static int REQUEST_CODE_UPDATE_SUBTASK = 2;
+    public final static int REQUEST_CODE_SHOW_SUBTASKS = 3;
+
+    private RecyclerView tasksRecyclerView;
+    private List<TableSubTask> tableSubTasksList;
+    private SubTaskListAdapter subTaskListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,11 +124,18 @@ public class CreateTaskActivity extends AppCompatActivity {
         selectedImageBase64 = "";
         taskProgress = "Incomplete";
 
-
+        tasksRecyclerView = findViewById(R.id.subTasksRecycleView);
+        tasksRecyclerView.setLayoutManager(
+                new LinearLayoutManager(CreateTaskActivity.this)
+        );
+        tableSubTasksList = new ArrayList<>();
+        subTaskListAdapter = new SubTaskListAdapter(tableSubTasksList, CreateTaskActivity.this);
+        tasksRecyclerView.setAdapter(subTaskListAdapter);
 
         if (getIntent().getBooleanExtra("isViewUpdate", false)) {
             alreadyAvailableTableTask = (TableTask) getIntent().getSerializableExtra("tableTask");
             setViewOrUpdateTableTask();
+            getTask(REQUEST_CODE_SHOW_SUBTASKS, false);
         }
 
         if (getIntent().getBooleanExtra("isFromQuickAction", false)) {
@@ -570,6 +596,54 @@ public class CreateTaskActivity extends AppCompatActivity {
         }
     }
 
+    // Checking if the task list is empty , which indicates that the app just started since we have
+    // Declared it as a global variable
+    // But for this case we are adding all the notes from the database and notify the adapter about
+    // The new loaded Dataset
+    private void getTask (final int requestCode, final boolean isSubTaskDeleted) {
+
+        @SuppressLint("StaticFieldLeak")
+        class GetTask_HS extends AsyncTask<Void, Void, List<TableSubTask>>{
+
+            @Override
+            protected List<TableSubTask> doInBackground(Void... voids) {
+
+                return TableTaskDB
+                        .getDatabase(getApplicationContext())
+                        .tableTaskDao().getAllSubTask(alreadyAvailableTableTask.getId());
+            }
+
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            protected void onPostExecute(List<TableSubTask> tableSubTasks){
+                super.onPostExecute(tableSubTasks);
+
+                if (requestCode == REQUEST_CODE_SHOW_SUBTASKS){
+                    tableSubTasksList.clear();
+                    tableSubTasksList.addAll(tableSubTasks);
+                    subTaskListAdapter.notifyDataSetChanged();
+                } else if (requestCode == REQUEST_CODE_ADD_SUBTASK) {
+                    tableSubTasks.add(0, tableSubTasks.get(0));
+                    subTaskListAdapter.notifyItemInserted(0);
+                    tasksRecyclerView.smoothScrollToPosition(0);
+                } else if (requestCode == REQUEST_CODE_UPDATE_SUBTASK){
+//                    tableSubTasksList.remove(taskClickedPosition);
+//
+//                    if (isTaskDeleted){
+//                        tableTaskAdapters.notifyItemRemoved(taskClickedPosition);
+//                    } else{
+//                        tableTasksList.add(taskClickedPosition, tableTasks.get(taskClickedPosition));
+//                        tableTaskAdapters.notifyItemChanged(taskClickedPosition);
+//
+//                    }
+                }
+                Log.d("My_TableTasks", tableSubTasksList.toString());
+            }
+        }
+        new GetTask_HS().execute();
+
+    }
+
     private String encode(Uri imageUri) throws FileNotFoundException {
         final InputStream imageStream = getContentResolver().openInputStream(imageUri);
         final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
@@ -585,4 +659,10 @@ public class CreateTaskActivity extends AppCompatActivity {
 
         return encImage;
 
-    }}
+    }
+
+    @Override
+    public void onTableSubTaskClicked(TableSubTask tableTask, int position) {
+        // TODO: 20/06/2022
+    }
+}

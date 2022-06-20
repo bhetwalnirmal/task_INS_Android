@@ -40,6 +40,7 @@
         <entry key="app/src/main/res/layout/content_main.xml" value="0.16210739614994935" />
         <entry key="app/src/main/res/layout/fragment_first.xml" value="0.16210739614994935" />
         <entry key="app/src/main/res/layout/fragment_second.xml" value="0.16210739614994935" />
+        <entry key="app/src/main/res/layout/item_container_subtask.xml" value="0.15425531914893617" />
         <entry key="app/src/main/res/layout/item_container_task.xml" value="0.16210739614994935" />
         <entry key="app/src/main/res/layout/item_selected_view.xml" value="0.16210739614994935" />
         <entry key="app/src/main/res/layout/layout_audio_dialoug.xml" value="0.1793087032669825" />

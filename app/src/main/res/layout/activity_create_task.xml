@@ -20,8 +20,8 @@
 
             <ImageView
                 android:id="@+id/imageBack"
-                android:layout_width="@dimen/_30sdp"
-                android:layout_height="@dimen/_30sdp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_marginStart="@dimen/_6sdp"
                 android:layout_marginTop="@dimen/_20sdp"
                 android:layout_marginEnd="@dimen/_12sdp"
@@ -30,7 +30,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:tint="@color/colorIcons" />
-
 
             <ImageView
                 android:id="@+id/imageSave"
@@ -49,40 +48,41 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/ubuntu_medium"
-                android:text="@string/is_your_task_complete"
-                android:paddingTop="@dimen/_20sdp"
                 android:layout_marginStart="@dimen/_15sdp"
                 android:layout_marginEnd="@dimen/_22sdp"
                 android:layout_weight="7"
-                android:visibility="gone"
+                android:fontFamily="@font/ubuntu_medium"
+                android:paddingTop="@dimen/_20sdp"
+                android:text="@string/is_your_task_complete"
                 android:textColor="@color/white"
-                app:layout_constraintTop_toBottomOf="@id/imageBack"
+                android:visibility="gone"
                 app:layout_constraintEnd_toStartOf="@id/spinnerCompleted"
-                />
+                app:layout_constraintTop_toBottomOf="@id/imageBack" />
 
             <Spinner
                 android:id="@+id/spinnerCompleted"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:paddingTop="@dimen/_20sdp"
                 android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_12sdp"
                 android:layout_marginEnd="@dimen/_42sdp"
                 android:layout_weight="7"
                 android:backgroundTint="@color/white"
                 android:gravity="center_vertical"
+                android:paddingTop="@dimen/_20sdp"
                 android:spinnerMode="dialog"
-                android:layout_marginTop="@dimen/_12sdp"
                 android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@id/imageBack"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/inputTaskTitle"
-                />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/imageBack" />
+
             <EditText
                 android:id="@+id/inputTaskTitle"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_35sdp"
+                android:layout_marginStart="@dimen/_12sdp"
                 android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_12sdp"
                 android:background="@null"
                 android:fontFamily="@font/ubuntu_bold"
                 android:hint="@string/task_title"
@@ -93,8 +93,6 @@
                 android:textColorHint="@color/colorTextHint"
                 android:textSize="@dimen/_16sdp"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginStart="@dimen/_12sdp"
-                android:layout_marginEnd="@dimen/_12sdp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/spinnerCompleted"
                 tools:ignore="TouchTargetSizeCheck"
@@ -104,21 +102,23 @@
                 android:id="@+id/textCreateDateTime"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_12sdp"
+                android:layout_marginEnd="@dimen/_12sdp"
                 android:fontFamily="@font/ubuntu_regular"
                 android:includeFontPadding="false"
                 android:textColor="@color/colorIcons"
                 android:textSize="@dimen/_10sdp"
-                android:layout_marginStart="@dimen/_12sdp"
-                android:layout_marginEnd="@dimen/_12sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/inputTaskTitle" />
+
             <EditText
-                android:paddingStart="@dimen/_10sdp"
                 android:id="@+id/inputTaskCategory"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_35sdp"
+                android:layout_marginStart="@dimen/_12sdp"
                 android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_12sdp"
                 android:background="@null"
                 android:fontFamily="@font/ubuntu_medium"
                 android:hint="@string/task_category"
@@ -126,15 +126,27 @@
                 android:importantForAutofill="no"
                 android:includeFontPadding="false"
                 android:inputType="text"
+                android:paddingStart="@dimen/_10sdp"
                 android:textColorHint="@color/colorTextHint"
                 android:textSize="@dimen/_16sdp"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginStart="@dimen/_12sdp"
-                android:layout_marginEnd="@dimen/_12sdp"
                 app:layout_constraintStart_toStartOf="@id/viewCategoryIndicator"
                 app:layout_constraintTop_toBottomOf="@id/textCreateDateTime"
                 tools:ignore="TouchTargetSizeCheck"
                 tools:layout_editor_absoluteX="22dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/subTasksRecycleView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:clipToPadding="false"
+                android:paddingStart="@dimen/_12sdp"
+                android:paddingEnd="@dimen/_12sdp"
+                android:paddingBottom="@dimen/_12sdp"
+                tools:listitem="@layout/item_container_subtask"
+                app:layout_constraintTop_toBottomOf="@id/inputTaskDesc"
+
+                />
 
 
             <View
@@ -179,7 +191,6 @@
                 android:padding="8dp"
                 android:textColorHint="@color/colorTextHint"
                 android:textSize="@dimen/_13sdp"
-
                 app:layout_constraintTop_toBottomOf="@id/imageTask" />
 
 
@@ -187,20 +198,20 @@
                 android:id="@+id/layoutPriority"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
                 android:layout_margin="@dimen/_10sdp"
-                app:layout_constraintTop_toBottomOf="@id/inputTaskDesc"
+                android:gravity="center_vertical"
                 android:orientation="horizontal"
-                >
+                app:layout_constraintTop_toBottomOf="@id/subTasksRecycleView">
+
                 <TextView
                     android:id="@+id/textPriority"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Color for Category"
                     android:fontFamily="@font/ubuntu_medium"
-                    android:textSize="@dimen/_15ssp"
                     android:includeFontPadding="false"
-                    />
+                    android:text="Color for Category"
+                    android:textSize="@dimen/_15ssp" />
+
                 <FrameLayout
 
                     android:layout_width="0dp"
@@ -208,18 +219,17 @@
                     android:layout_weight="1">
 
                     <View
-                        android:layout_gravity="center"
                         android:id="@+id/viewColorLow"
                         android:layout_width="@dimen/_35sdp"
                         android:layout_height="@dimen/_35sdp"
-                        android:background="@drawable/background_taskcolor_low"
-                        />
+                        android:layout_gravity="center"
+                        android:background="@drawable/background_taskcolor_low" />
 
                     <ImageView
-                        android:layout_gravity="center"
                         android:id="@+id/imagePriorityLow"
                         android:layout_width="@dimen/_35sdp"
                         android:layout_height="@dimen/_35sdp"
+                        android:layout_gravity="center"
                         android:contentDescription="@string/app_name"
                         android:padding="@dimen/_10sdp"
                         android:src="@drawable/ic_done"
@@ -234,18 +244,17 @@
                     android:layout_weight="1">
 
                     <View
-                        android:layout_gravity="center"
                         android:id="@+id/viewColorMedium"
                         android:layout_width="@dimen/_35sdp"
                         android:layout_height="@dimen/_35sdp"
-                        android:background="@drawable/background_taskcolor_medium"
-                        />
+                        android:layout_gravity="center"
+                        android:background="@drawable/background_taskcolor_medium" />
 
                     <ImageView
-                        android:layout_gravity="center"
                         android:id="@+id/imagePriorityMedium"
                         android:layout_width="@dimen/_35sdp"
                         android:layout_height="@dimen/_35sdp"
+                        android:layout_gravity="center"
                         android:contentDescription="@string/app_name"
                         android:padding="@dimen/_10sdp"
                         android:src="@drawable/ic_done"
@@ -260,18 +269,17 @@
                     android:layout_weight="1">
 
                     <View
-                        android:layout_gravity="center"
                         android:id="@+id/viewColorHigh"
                         android:layout_width="@dimen/_35sdp"
                         android:layout_height="@dimen/_35sdp"
-                        android:background="@drawable/background_taskcolor_high"
-                        />
+                        android:layout_gravity="center"
+                        android:background="@drawable/background_taskcolor_high" />
 
                     <ImageView
-                        android:layout_gravity="center"
                         android:id="@+id/imagePriorityHigh"
                         android:layout_width="@dimen/_35sdp"
                         android:layout_height="@dimen/_35sdp"
+                        android:layout_gravity="center"
                         android:contentDescription="@string/app_name"
                         android:padding="@dimen/_10sdp"
                         android:src="@drawable/ic_done"
@@ -287,9 +295,8 @@
                 android:layout_margin="@dimen/_10sdp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                tools:ignore = "UseCompoundDrawable"
                 app:layout_constraintTop_toBottomOf="@id/layoutAudioRecord"
-                >
+                tools:ignore="UseCompoundDrawable">
 
                 <ImageView
                     android:layout_width="@dimen/_22sdp"
@@ -306,10 +313,10 @@
                     android:includeFontPadding="false"
                     android:text="@string/add_image"
                     android:textColor="@color/colorIcons"
-                    android:textSize="@dimen/_12ssp"
-                    />
+                    android:textSize="@dimen/_12ssp" />
 
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/layoutAudioRecord"
                 android:layout_width="match_parent"
@@ -317,9 +324,8 @@
                 android:layout_margin="@dimen/_10sdp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                tools:ignore = "UseCompoundDrawable"
                 app:layout_constraintTop_toBottomOf="@id/layoutPriority"
-                >
+                tools:ignore="UseCompoundDrawable">
 
                 <ImageView
                     android:layout_width="@dimen/_22sdp"
@@ -336,21 +342,20 @@
                     android:includeFontPadding="false"
                     android:text="Add Recording"
                     android:textColor="@color/colorIcons"
-                    android:textSize="@dimen/_12ssp"
-                    />
+                    android:textSize="@dimen/_12ssp" />
 
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/layoutAddSubTask"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_35sdp"
                 android:layout_margin="@dimen/_10sdp"
                 android:gravity="center_vertical"
-                android:visibility="invisible"
                 android:orientation="horizontal"
-                tools:ignore = "UseCompoundDrawable"
+                android:visibility="invisible"
                 app:layout_constraintTop_toBottomOf="@id/layoutAddImage"
-                >
+                tools:ignore="UseCompoundDrawable">
 
                 <ImageView
                     android:layout_width="@dimen/_22sdp"
@@ -367,8 +372,7 @@
                     android:includeFontPadding="false"
                     android:text="Add Subtask"
                     android:textColor="@color/colorIcons"
-                    android:textSize="@dimen/_12ssp"
-                    />
+                    android:textSize="@dimen/_12ssp" />
 
             </LinearLayout>
 
@@ -380,16 +384,16 @@
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:layout_marginBottom="@dimen/_10sdp"
                 android:gravity="center_vertical"
+                android:orientation="horizontal"
                 android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@id/layoutAddSubTask"
-                android:orientation="horizontal">
+                app:layout_constraintTop_toBottomOf="@id/layoutAddSubTask">
 
                 <ImageView
 
                     android:layout_width="@dimen/_22sdp"
                     android:layout_height="@dimen/_22sdp"
                     android:contentDescription="@string/app_name"
-                    android:src="@drawable/ic_delete"/>
+                    android:src="@drawable/ic_delete" />
 
                 <TextView
                     android:layout_width="match_parent"
