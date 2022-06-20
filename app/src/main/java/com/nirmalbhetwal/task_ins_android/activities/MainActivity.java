@@ -22,7 +22,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import com.nirmalbhetwal.task_ins_android.R;
 import com.nirmalbhetwal.task_ins_android.adapter.TaskListAdapter;
 import com.nirmalbhetwal.task_ins_android.database.TableTaskDB;
-import com.nirmalbhetwal.task_ins_android.entities.TableTask;
+import com.nirmalbhetwal.task_ins_android.model.TableTask;
 import com.nirmalbhetwal.task_ins_android.listeners.TableTaskListeners;
 
 import java.io.ByteArrayOutputStream;

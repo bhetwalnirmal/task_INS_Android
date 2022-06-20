@@ -7,7 +7,8 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 
-import com.nirmalbhetwal.task_ins_android.entities.TableTask;
+import com.nirmalbhetwal.task_ins_android.model.TableSubTask;
+import com.nirmalbhetwal.task_ins_android.model.TableTask;
 
 import java.util.List;
 
@@ -22,4 +23,15 @@ public interface TableTaskDao {
 
     @Delete
     void deleteTask(TableTask tableTask);
+
+    @Query("SELECT * FROM tableSubTask where category = :catId")
+    List<TableSubTask> getAllSubTask(int catId);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertSubTaskTable (TableSubTask tableSubTask);
+
+    @Delete
+    void deleteSubTask(TableSubTask tableSubTask);
+
+
 }

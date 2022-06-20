@@ -1,7 +1,6 @@
 package com.nirmalbhetwal.task_ins_android.adapter;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -12,7 +11,6 @@ import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -20,10 +18,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.nirmalbhetwal.task_ins_android.R;
-import com.nirmalbhetwal.task_ins_android.entities.TableTask;
+import com.nirmalbhetwal.task_ins_android.model.TableTask;
 import com.nirmalbhetwal.task_ins_android.listeners.TableTaskListeners;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;

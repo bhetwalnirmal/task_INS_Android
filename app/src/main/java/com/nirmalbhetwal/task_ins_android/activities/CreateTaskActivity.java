@@ -3,6 +3,7 @@ package com.nirmalbhetwal.task_ins_android.activities;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.ContextWrapper;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -16,13 +17,13 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.InputType;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,7 +36,8 @@ import androidx.core.content.ContextCompat;
 
 import com.nirmalbhetwal.task_ins_android.R;
 import com.nirmalbhetwal.task_ins_android.database.TableTaskDB;
-import com.nirmalbhetwal.task_ins_android.entities.TableTask;
+import com.nirmalbhetwal.task_ins_android.model.TableSubTask;
+import com.nirmalbhetwal.task_ins_android.model.TableTask;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -57,8 +59,6 @@ public class CreateTaskActivity extends AppCompatActivity {
     private TableTask alreadyAvailableTableTask;
     private AlertDialog dialogDeleteTask;
     private AlertDialog dialogAudioRecord;
-    private Spinner spinner;
-    private Spinner taskSpinner;
     private String audioFilePath;
     private String taskProgress;
     private MediaRecorder mediaRecorder;
@@ -69,11 +69,12 @@ public class CreateTaskActivity extends AppCompatActivity {
     private TextView tvRecordingPath;
     private ImageView ivSimpleBq;
     private boolean isRecording=false;
-    private boolean isPlaving=false;
+    private boolean isPlaying =false;
     private static final int REQUEST_AUDIO_PERMISSION = 101;
     private static final int REQUEST_CODE_STORAGE_PERMISSION = 1;
     private static final int REQUEST_CODE_SELECT_IMAGE = 2;
     private static final int GALLERY_REQUEST = 100;
+    private TextView addUpdateButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,8 +84,8 @@ public class CreateTaskActivity extends AppCompatActivity {
         ImageView imageBack = findViewById(R.id.imageBack);
         imageBack.setOnClickListener(v -> onBackPressed());
 
-        ImageView imageSave = findViewById(R.id.imageSave);
-        imageSave.setOnClickListener(v -> saveTask());
+        ImageView imageDelete = findViewById(R.id.imageSave);
+        imageDelete.setOnClickListener(v -> showDeleteDialog());
 
         inputTaskTitle = findViewById(R.id.inputTaskTitle);
         inputTaskCat = findViewById(R.id.inputTaskCategory);
@@ -92,8 +93,9 @@ public class CreateTaskActivity extends AppCompatActivity {
         textCreateDateTime = findViewById(R.id.textCreateDateTime);
         viewCategoryIndicator = findViewById(R.id.viewCategoryIndicator);
         imageTableTask = findViewById(R.id.imageTask);
+        addUpdateButton = findViewById(R.id.textAddUpdate);
 
-
+        addUpdateButton.setOnClickListener(view -> saveTask());
         textCreateDateTime.setText(
                 new SimpleDateFormat("EEEE, dd MMMM yyyy HH:mm a", Locale.getDefault())
                         .format(new Date())
@@ -122,8 +124,6 @@ public class CreateTaskActivity extends AppCompatActivity {
             }
         }
 
-
-
         initMore();
         setCategoryIndicatorColor();
     }
@@ -132,6 +132,7 @@ public class CreateTaskActivity extends AppCompatActivity {
         inputTaskTitle.setText(alreadyAvailableTableTask.getTitle());
         inputTaskDesc.setText(alreadyAvailableTableTask.getTaskText());
         inputTaskCat.setText(alreadyAvailableTableTask.getCategory());
+        addUpdateButton.setText("Update Task");
 
         textCreateDateTime.setText(alreadyAvailableTableTask.getCreateDateTime());
         if (alreadyAvailableTableTask.getImagePath() != null && !alreadyAvailableTableTask.getImagePath().trim().isEmpty()) {
@@ -271,16 +272,72 @@ public class CreateTaskActivity extends AppCompatActivity {
             }
         });
 
+
+        findViewById(R.id.textAddUpdate).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                saveTask();
+            }
+        });
+
         if (alreadyAvailableTableTask != null) {
-            findViewById(R.id.layoutDeleteTask).setVisibility(View.VISIBLE);
-            findViewById(R.id.layoutDeleteTask).setOnClickListener(new View.OnClickListener() {
+            findViewById(R.id.layoutAddSubTask).setVisibility(View.VISIBLE);
+            findViewById(R.id.layoutAddSubTask).setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
-                    showDeleteDialog();
+                public void onClick(View view) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(CreateTaskActivity.this);
+                    builder.setTitle("Add Subtask");
+
+                    // Set up the input
+                    final EditText input = new EditText(CreateTaskActivity.this);
+                    // Specify the type of input expected; this, for example,
+                    input.setInputType(InputType.TYPE_CLASS_TEXT);
+                    builder.setView(input);
+
+                    // Set up the buttons
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            if (input.getText().toString() != "") {
+                                final TableSubTask tableSubTask = new TableSubTask();
+
+                                tableSubTask.setTitle(input.getText().toString());
+                                tableSubTask.setCatId(alreadyAvailableTableTask.getId());
+                                tableSubTask.setStatus(0);
+
+                                @SuppressLint("StaticFieldLeak")
+                                class SaveSubTask extends AsyncTask<Void, Void, Void> {
+                                    @Override
+                                    protected Void doInBackground(Void... voids) {
+                                        TableTaskDB.getDatabase(getApplicationContext()).tableTaskDao().insertSubTaskTable(tableSubTask);
+                                        return null;
+
+                                    }
+
+                                    @Override
+                                    protected void onPostExecute(Void aVoid) {
+                                        super.onPostExecute(aVoid);
+                                        Intent intent = new Intent();
+                                        setResult(RESULT_OK, intent);
+                                        finish();
+                                    }
+                                }
+
+                                new SaveSubTask().execute();
+                            }
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+
+                    builder.show();
                 }
             });
-
-
         }
     }
 
@@ -359,7 +416,7 @@ public class CreateTaskActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
 
-                    if (!isPlaving){
+                    if (!isPlaying){
                         if (audioFilePath!=null)
                         {
                             try {
@@ -380,7 +437,7 @@ public class CreateTaskActivity extends AppCompatActivity {
                         }
 
                         mediaPlayer.start();
-                        isPlaving = true;
+                        isPlaying = true;
                     }
 
                     else {
@@ -388,7 +445,7 @@ public class CreateTaskActivity extends AppCompatActivity {
                         mediaPlayer.release();
                         //  mediaPlayer = null;
                         // mediaPlayer = new MediaPlayer();
-                        isPlaving = false;
+                        isPlaying = false;
                     }
 
                 }

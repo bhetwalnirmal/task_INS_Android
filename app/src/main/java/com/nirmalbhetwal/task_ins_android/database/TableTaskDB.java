@@ -6,10 +6,11 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-import com.nirmalbhetwal.task_ins_android.entities.TableTask;
+import com.nirmalbhetwal.task_ins_android.model.TableSubTask;
+import com.nirmalbhetwal.task_ins_android.model.TableTask;
 
 
-@Database(entities = {TableTask.class}, version = 2, exportSchema = false)
+@Database(entities = {TableTask.class, TableSubTask.class}, version = 2, exportSchema = false)
 public abstract class TableTaskDB extends RoomDatabase {
 
     private static TableTaskDB tableTaskDB;
