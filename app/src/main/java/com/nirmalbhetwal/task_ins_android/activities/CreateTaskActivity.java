@@ -751,7 +751,6 @@ public class CreateTaskActivity extends AppCompatActivity implements DatePickerD
 
     @Override
     public void onTableSubTaskClicked(TableSubTask tableTask, int position) {
-        // TODO: 20/06/2022
         Log.d("SUB_TASK", "Editing:" + tableTask.getStatus());
         subTaskListAdapter.updateSubtask(position, CreateTaskActivity.this);
 
