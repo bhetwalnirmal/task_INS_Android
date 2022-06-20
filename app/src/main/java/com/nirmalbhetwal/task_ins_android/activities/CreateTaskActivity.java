@@ -380,7 +380,15 @@ public class CreateTaskActivity extends AppCompatActivity implements TableSubTas
                                     protected Void doInBackground(Void... voids) {
                                         TableTaskDB.getDatabase(getApplicationContext()).tableTaskDao().insertSubTaskTable(tableSubTask);
                                         return null;
+                                    }
 
+                                    @Override
+                                    protected void onPostExecute(Void unused) {
+                                        super.onPostExecute(unused);
+                                        Intent intent = new Intent();
+                                        intent.putExtra("isNewTaskAdded", true);
+                                        setResult(RESULT_OK, intent);
+                                        finish();
                                     }
                                 }
 
