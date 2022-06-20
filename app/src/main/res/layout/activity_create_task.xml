@@ -383,7 +383,7 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:visibility="invisible"
-                app:layout_constraintTop_toBottomOf="@id/layoutDueDatePicker"
+                app:layout_constraintTop_toBottomOf="@id/layoutAddImage"
                 tools:ignore="UseCompoundDrawable">
 
                 <ImageView

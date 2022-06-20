@@ -94,6 +94,7 @@ public class CreateTaskActivity extends AppCompatActivity implements DatePickerD
     private static final int GALLERY_REQUEST = 100;
     private TextView addUpdateButton;
     private TextView tvDueDate;
+    private DatePicker dueDatePicker;
 
 
     public final static int REQUEST_CODE_ADD_SUBTASK = 1;
@@ -183,6 +184,7 @@ public class CreateTaskActivity extends AppCompatActivity implements DatePickerD
             imageTableTask.setVisibility(View.VISIBLE);
             selectedImageBase64 = alreadyAvailableTableTask.getImagePath();
         }
+        tvDueDate.setText(alreadyAvailableTableTask.getSetDueDate());
     }
 
 
@@ -209,6 +211,10 @@ public class CreateTaskActivity extends AppCompatActivity implements DatePickerD
         tableTask.setImagePath(selectedImageBase64);
         tableTask.setCompleted(taskProgress);
 
+        if (dueDatePicker != null) {
+            tableTask.setSetDueDate(this.parseDueDate());
+        }
+
         if (alreadyAvailableTableTask != null) {
             tableTask.setId(alreadyAvailableTableTask.getId());
         }
@@ -234,6 +240,17 @@ public class CreateTaskActivity extends AppCompatActivity implements DatePickerD
         }
 
         new SaveTask().execute();
+    }
+
+    private String parseDueDate() {
+        DatePicker datePicker = this.dueDatePicker;
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth());
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, MMM d, yyyy");
+        String dateTime = dateFormat.format(calendar.getTime());
+        tvDueDate.setText(dateTime);
+        return dateTime;
     }
 
     private void initMore() {
@@ -741,10 +758,12 @@ public class CreateTaskActivity extends AppCompatActivity implements DatePickerD
 
     @Override
     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+        this.dueDatePicker = datePicker;
         Calendar calendar = Calendar.getInstance();
         calendar.set(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth());
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, MMM d, yyyy");
-        tvDueDate.setText(dateFormat.format(calendar.getTime()));
+        String dateTime = dateFormat.format(calendar.getTime());
+        tvDueDate.setText(dateTime);
     }
 }

@@ -20,6 +20,9 @@ public class TableTask implements Serializable {
     @ColumnInfo(name = "set_date_time")
     private String setDateTime;
 
+    @ColumnInfo(name = "set_due_date")
+    private String setDueDate;
+
     @ColumnInfo(name = "category")
     private String category;
 
@@ -130,5 +133,11 @@ public class TableTask implements Serializable {
         this.completed = completed;
     }
 
+    public String getSetDueDate() {
+        return setDueDate;
+    }
 
+    public void setSetDueDate(String setDueDate) {
+        this.setDueDate = setDueDate;
+    }
 }
