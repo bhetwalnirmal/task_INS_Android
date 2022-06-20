@@ -23,6 +23,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -233,6 +235,42 @@ public class CreateTaskActivity extends AppCompatActivity implements TableSubTas
         final ImageView imagePriorityLow = findViewById(R.id.imagePriorityLow);
         final ImageView imagePriorityMedium = findViewById(R.id.imagePriorityMedium);
         final ImageView imagePriorityHigh = findViewById(R.id.imagePriorityHigh);
+
+        CheckBox taskStatusCheckBox = findViewById(R.id.checkBoxStatus);
+
+        // TODO: 20/06/2022 Verification of Marking ENTIRE TASK AS COMPLETED 
+        taskStatusCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+                @SuppressLint("StaticFieldLeak")
+                class GetTask_HS extends AsyncTask<Void, Void, List<TableSubTask>>{
+
+                    @Override
+                    protected List<TableSubTask> doInBackground(Void... voids) {
+
+                        return TableTaskDB
+                                .getDatabase(getApplicationContext())
+                                .tableTaskDao().getAllSubTask(alreadyAvailableTableTask.getId());
+                    }
+
+                    @SuppressLint("NotifyDataSetChanged")
+                    @Override
+                    protected void onPostExecute(List<TableSubTask> tableSubTasks){
+                        super.onPostExecute(tableSubTasks);
+                        for (TableSubTask subTask:tableSubTasks){
+                            if (subTask.getStatus() != 1){
+                                compoundButton.setChecked(!b);
+                                break;
+                            }
+                        }
+                        finish();
+
+                    }
+                }
+                new GetTask_HS().execute();
+            }
+        });
 
         findViewById(R.id.viewColorLow).setOnClickListener(new View.OnClickListener() {
             @Override
