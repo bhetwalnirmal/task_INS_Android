@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#DFF6FF"
-    tools:context=".CreateTaskActivity">
+    tools:context=".activities.CreateTaskActivity">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/_40sdp"
         android:clipToPadding="false"
-        android:padding="@dimen/_10sdp"
-
-        >
+        android:padding="@dimen/_10sdp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -21,38 +19,62 @@
             android:animateLayoutChanges="true">
 
             <ImageView
-                android:id="@+id/ivBack"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:minHeight="75dp"
-                android:padding="@dimen/_10sdp"
+                android:id="@+id/imageBack"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="@dimen/_6sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_12sdp"
+                android:contentDescription="@string/app_name"
                 android:src="@drawable/ic_back"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:gravity="center"
-                android:textSize="@dimen/_20sdp"
-                android:text="Fri Jun 17, 01:55"
-                android:fontFamily="@font/ubuntu_bold"
-                app:layout_constraintEnd_toStartOf="@+id/ivSave"
-                app:layout_constraintStart_toEndOf="@+id/ivBack"
-                app:layout_constraintTop_toTopOf="@id/ivBack" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/colorIcons" />
 
             <ImageView
-                android:id="@+id/ivSave"
+                android:id="@+id/imageSave"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_12sdp"
+                android:background="@drawable/ic_delete"
+                android:contentDescription="@string/app_name"
+                android:padding="@dimen/_4sdp"
+                android:src="@drawable/ic_done"
+                app:layout_constraintBottom_toBottomOf="@id/imageBack"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/imageBack"
+                app:tint="@color/colorIcons" />
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="3dp"
-                android:minHeight="80dp"
-                android:src="@drawable/ic_save"
-                app:layout_constraintBottom_toTopOf="@+id/inputTaskTitle"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_22sdp"
+                android:layout_weight="7"
+                android:fontFamily="@font/ubuntu_medium"
+                android:paddingTop="@dimen/_20sdp"
+                android:text="@string/is_your_task_complete"
+                android:textColor="@color/white"
+                android:visibility="gone"
+                app:layout_constraintEnd_toStartOf="@id/spinnerCompleted"
+                app:layout_constraintTop_toBottomOf="@id/imageBack" />
+
+            <Spinner
+                android:id="@+id/spinnerCompleted"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:layout_marginEnd="@dimen/_42sdp"
+                android:layout_weight="7"
+                android:backgroundTint="@color/white"
+                android:gravity="center_vertical"
+                android:paddingTop="@dimen/_20sdp"
+                android:spinnerMode="dialog"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@id/inputTaskTitle"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/ivBack" />
+                app:layout_constraintTop_toBottomOf="@id/imageBack" />
 
             <EditText
                 android:id="@+id/inputTaskTitle"
@@ -68,13 +90,13 @@
                 android:importantForAutofill="no"
                 android:includeFontPadding="false"
                 android:inputType="text"
-                android:textColor="@color/white"
                 android:textColorHint="@color/colorTextHint"
                 android:textSize="@dimen/_16sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/ivBack"
-                tools:ignore="TouchTargetSizeCheck" />
+                app:layout_constraintTop_toBottomOf="@id/spinnerCompleted"
+                tools:ignore="TouchTargetSizeCheck"
+                tools:layout_editor_absoluteX="22dp" />
 
             <TextView
                 android:id="@+id/textCreateDateTime"
@@ -104,14 +126,38 @@
                 android:importantForAutofill="no"
                 android:includeFontPadding="false"
                 android:inputType="text"
-                android:textColor="@color/white"
+                android:paddingStart="@dimen/_10sdp"
                 android:textColorHint="@color/colorTextHint"
                 android:textSize="@dimen/_16sdp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@id/imageTask"
+                app:layout_constraintStart_toStartOf="@id/viewCategoryIndicator"
                 app:layout_constraintTop_toBottomOf="@id/textCreateDateTime"
                 tools:ignore="TouchTargetSizeCheck"
                 tools:layout_editor_absoluteX="22dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/subTasksRecycleView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:clipToPadding="false"
+                android:paddingStart="@dimen/_12sdp"
+                android:paddingEnd="@dimen/_12sdp"
+                android:paddingBottom="@dimen/_12sdp"
+                tools:listitem="@layout/item_container_subtask"
+                app:layout_constraintTop_toBottomOf="@id/inputTaskDesc"
+
+                />
+
+
+            <View
+                android:id="@+id/viewCategoryIndicator"
+                android:layout_width="@dimen/_5sdp"
+                android:layout_height="0dp"
+                android:layout_marginStart="@dimen/_12sdp"
+                android:background="@drawable/background_category_indicator"
+                app:layout_constraintBottom_toBottomOf="@id/inputTaskCategory"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/inputTaskCategory" />
 
             <ImageView
                 android:id="@+id/imageTask"
@@ -137,32 +183,16 @@
                 android:background="@drawable/bg_white_stroke"
                 android:fontFamily="@font/ubuntu_regular"
                 android:gravity="top"
-                android:hint="Enter task description"
+                android:hint="@string/this_is_where_you_fill_the_description_of_the_task"
                 android:importantForAutofill="no"
                 android:includeFontPadding="false"
                 android:inputType="textMultiLine"
                 android:minHeight="@dimen/_100sdp"
                 android:padding="8dp"
-                android:textColor="@color/white"
                 android:textColorHint="@color/colorTextHint"
                 android:textSize="@dimen/_13sdp"
-
                 app:layout_constraintTop_toBottomOf="@id/imageTask" />
 
-
-            <TextView
-                android:id="@+id/tvPriority"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_12sdp"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:layout_marginEnd="@dimen/_12sdp"
-                android:layout_marginBottom="@dimen/_15sdp"
-                android:fontFamily="@font/ubuntu_bold"
-                android:padding="8dp"
-                android:text="Set Priority"
-                android:textSize="@dimen/_16sdp"
-                app:layout_constraintTop_toBottomOf="@id/inputTaskDesc" />
 
             <LinearLayout
                 android:id="@+id/layoutPriority"
@@ -171,106 +201,90 @@
                 android:layout_margin="@dimen/_10sdp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                app:layout_constraintTop_toBottomOf="@id/tvPriority">
+                app:layout_constraintTop_toBottomOf="@id/subTasksRecycleView">
+
+                <TextView
+                    android:id="@+id/textPriority"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/ubuntu_medium"
+                    android:includeFontPadding="false"
+                    android:text="Color for Category"
+                    android:textSize="@dimen/_15ssp" />
 
                 <FrameLayout
+
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
 
+                    <View
+                        android:id="@+id/viewColorLow"
+                        android:layout_width="@dimen/_35sdp"
+                        android:layout_height="@dimen/_35sdp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/background_taskcolor_low" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="75dp"
-                            android:layout_gravity="center"
-                            android:contentDescription="@string/app_name"
-                            android:src="@drawable/circle"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:tint="@color/colorTaskColor6" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="10dp"
-                            android:fontFamily="@font/ubuntu_medium"
-                            android:gravity="center"
-                            android:text="LOW"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
+                    <ImageView
+                        android:id="@+id/imagePriorityLow"
+                        android:layout_width="@dimen/_35sdp"
+                        android:layout_height="@dimen/_35sdp"
+                        android:layout_gravity="center"
+                        android:contentDescription="@string/app_name"
+                        android:padding="@dimen/_10sdp"
+                        android:src="@drawable/ic_done"
+                        app:tint="@color/white" />
 
                 </FrameLayout>
 
                 <FrameLayout
+
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
 
+                    <View
+                        android:id="@+id/viewColorMedium"
+                        android:layout_width="@dimen/_35sdp"
+                        android:layout_height="@dimen/_35sdp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/background_taskcolor_medium" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                    <ImageView
+                        android:id="@+id/imagePriorityMedium"
+                        android:layout_width="@dimen/_35sdp"
+                        android:layout_height="@dimen/_35sdp"
+                        android:layout_gravity="center"
+                        android:contentDescription="@string/app_name"
+                        android:padding="@dimen/_10sdp"
+                        android:src="@drawable/ic_done"
+                        app:tint="@color/white" />
 
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="75dp"
-                            android:layout_gravity="center"
-                            android:contentDescription="@string/app_name"
-                            android:fontFamily="@font/ubuntu_medium"
-                            android:src="@drawable/circle"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:tint="@color/colorPrimary" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="10dp"
-                            android:gravity="center"
-                            android:text="MEDIUM"
-                            android:textStyle="bold" />
-                    </LinearLayout>
                 </FrameLayout>
 
                 <FrameLayout
+
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                    <View
+                        android:id="@+id/viewColorHigh"
+                        android:layout_width="@dimen/_35sdp"
+                        android:layout_height="@dimen/_35sdp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/background_taskcolor_high" />
 
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="75dp"
-                            android:layout_gravity="center"
-                            android:contentDescription="@string/app_name"
-                            android:src="@drawable/circle"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:tint="@color/colorTaskColor3" />
+                    <ImageView
+                        android:id="@+id/imagePriorityHigh"
+                        android:layout_width="@dimen/_35sdp"
+                        android:layout_height="@dimen/_35sdp"
+                        android:layout_gravity="center"
+                        android:contentDescription="@string/app_name"
+                        android:padding="@dimen/_10sdp"
+                        android:src="@drawable/ic_done"
+                        app:tint="@color/white" />
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="10dp"
-                            android:fontFamily="@font/ubuntu_medium"
-                            android:gravity="center"
-                            android:text="HIGH"
-                            android:textStyle="bold" />
-                    </LinearLayout>
                 </FrameLayout>
             </LinearLayout>
 
@@ -297,9 +311,9 @@
                     android:layout_marginStart="@dimen/_10sdp"
                     android:fontFamily="@font/ubuntu_medium"
                     android:includeFontPadding="false"
-                    android:text="Add Images"
+                    android:text="@string/add_image"
                     android:textColor="@color/colorIcons"
-                    android:textSize="12sp" />
+                    android:textSize="@dimen/_12ssp" />
 
             </LinearLayout>
 
@@ -326,11 +340,83 @@
                     android:layout_marginStart="@dimen/_10sdp"
                     android:fontFamily="@font/ubuntu_medium"
                     android:includeFontPadding="false"
-                    android:text="Add Audio"
+                    android:text="Add Recording"
                     android:textColor="@color/colorIcons"
-                    android:textSize="12sp" />
+                    android:textSize="@dimen/_12ssp" />
 
             </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutAddSubTask"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_margin="@dimen/_10sdp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:visibility="invisible"
+                app:layout_constraintTop_toBottomOf="@id/layoutAddImage"
+                tools:ignore="UseCompoundDrawable">
+
+                <ImageView
+                    android:layout_width="@dimen/_22sdp"
+                    android:layout_height="@dimen/_22sdp"
+                    android:contentDescription="@string/app_name"
+                    android:src="@drawable/ic_list"
+                    app:tint="@color/colorIcons" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:fontFamily="@font/ubuntu_medium"
+                    android:includeFontPadding="false"
+                    android:text="Add Subtask"
+                    android:textColor="@color/colorIcons"
+                    android:textSize="@dimen/_12ssp" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/layoutStatus"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_margin="@dimen/_10sdp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:visibility="invisible"
+                app:layout_constraintTop_toBottomOf="@id/layoutAddSubTask"
+                tools:ignore="UseCompoundDrawable">
+
+                <CheckBox
+                    android:id="@+id/checkBoxStatus"
+                    android:layout_width="@dimen/_22sdp"
+                    android:layout_height="@dimen/_22sdp">
+                </CheckBox>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:fontFamily="@font/ubuntu_medium"
+                    android:includeFontPadding="false"
+                    android:text="Mark Entire Task as Complete"
+                    android:textColor="@color/colorIcons"
+                    android:textSize="@dimen/_12ssp" />
+
+            </LinearLayout>
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    <TextView
+        android:id="@+id/textAddUpdate"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:gravity="center"
+        android:background="@color/blue2"
+        android:layout_alignParentBottom="true"
+        android:includeFontPadding="false"
+        android:text="Add Task"
+        android:textSize="@dimen/_13ssp"
+        />
+
+</RelativeLayout>
