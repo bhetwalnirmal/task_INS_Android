@@ -11,6 +11,7 @@ import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -121,15 +122,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TableT
             else {
                 imageTableTask.setVisibility(View.GONE);
             }
-/*
-            if (tableTask.getCompleted() == "Completed") {
-                textComplete.setVisibility(View.VISIBLE);
 
-            }
-            else {
-                textProgress.setVisibility(View.VISIBLE);
-            }
-            */
 
         }
     }

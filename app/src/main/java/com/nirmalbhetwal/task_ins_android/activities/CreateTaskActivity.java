@@ -2,6 +2,7 @@ package com.nirmalbhetwal.task_ins_android.activities;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
 import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -25,6 +26,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -49,6 +51,7 @@ import com.nirmalbhetwal.task_ins_android.listeners.TableSubTaskListeners;
 import com.nirmalbhetwal.task_ins_android.listeners.TableTaskListeners;
 import com.nirmalbhetwal.task_ins_android.model.TableSubTask;
 import com.nirmalbhetwal.task_ins_android.model.TableTask;
+import com.nirmalbhetwal.task_ins_android.utils.CustomDatePicker;
 import com.nirmalbhetwal.task_ins_android.utils.SwipeToDeleteCallback;
 
 import java.io.ByteArrayOutputStream;
@@ -58,11 +61,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class CreateTaskActivity extends AppCompatActivity implements TableSubTaskListeners {
+public class CreateTaskActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TableSubTaskListeners {
 
     private EditText inputTaskTitle, inputTaskDesc ,inputTaskCat;
     private TextView textCreateDateTime;
@@ -89,6 +93,8 @@ public class CreateTaskActivity extends AppCompatActivity implements TableSubTas
     private static final int REQUEST_CODE_SELECT_IMAGE = 2;
     private static final int GALLERY_REQUEST = 100;
     private TextView addUpdateButton;
+    private TextView tvDueDate;
+    private DatePicker dueDatePicker;
 
 
     public final static int REQUEST_CODE_ADD_SUBTASK = 1;
@@ -117,6 +123,7 @@ public class CreateTaskActivity extends AppCompatActivity implements TableSubTas
         viewCategoryIndicator = findViewById(R.id.viewCategoryIndicator);
         imageTableTask = findViewById(R.id.imageTask);
         addUpdateButton = findViewById(R.id.textAddUpdate);
+        tvDueDate = findViewById(R.id.tvDueDatePicker);
 
         addUpdateButton.setOnClickListener(view -> saveTask());
         textCreateDateTime.setText(
@@ -165,6 +172,7 @@ public class CreateTaskActivity extends AppCompatActivity implements TableSubTas
         inputTaskDesc.setText(alreadyAvailableTableTask.getTaskText());
         inputTaskCat.setText(alreadyAvailableTableTask.getCategory());
         addUpdateButton.setText("Update Task");
+        findViewById(R.id.imageSave).setVisibility(View.VISIBLE);
         findViewById(R.id.layoutStatus).setVisibility(View.VISIBLE);
         textCreateDateTime.setText(alreadyAvailableTableTask.getCreateDateTime());
         if (alreadyAvailableTableTask.getImagePath() != null && !alreadyAvailableTableTask.getImagePath().trim().isEmpty()) {
@@ -176,6 +184,14 @@ public class CreateTaskActivity extends AppCompatActivity implements TableSubTas
             imageTableTask.setImageBitmap(bitmap);
             imageTableTask.setVisibility(View.VISIBLE);
             selectedImageBase64 = alreadyAvailableTableTask.getImagePath();
+        }
+        tvDueDate.setText(alreadyAvailableTableTask.getSetDueDate());
+        CheckBox checkBox = findViewById(R.id.checkBoxStatus);
+        if (alreadyAvailableTableTask.getCompleted() == "Completed") {
+            checkBox.setChecked(true);
+        }
+        else {
+            checkBox.setChecked(false);
         }
     }
 
@@ -203,6 +219,10 @@ public class CreateTaskActivity extends AppCompatActivity implements TableSubTas
         tableTask.setImagePath(selectedImageBase64);
         tableTask.setCompleted(taskProgress);
 
+        if (dueDatePicker != null) {
+            tableTask.setSetDueDate(this.parseDueDate());
+        }
+
         if (alreadyAvailableTableTask != null) {
             tableTask.setId(alreadyAvailableTableTask.getId());
         }
@@ -228,6 +248,17 @@ public class CreateTaskActivity extends AppCompatActivity implements TableSubTas
         }
 
         new SaveTask().execute();
+    }
+
+    private String parseDueDate() {
+        DatePicker datePicker = this.dueDatePicker;
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth());
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, MMM d, yyyy");
+        String dateTime = dateFormat.format(calendar.getTime());
+        tvDueDate.setText(dateTime);
+        return dateTime;
     }
 
     private void initMore() {
@@ -337,6 +368,15 @@ public class CreateTaskActivity extends AppCompatActivity implements TableSubTas
             @Override
             public void onClick(View v) {
                 showAudioDialog();
+            }
+        });
+
+        findViewById(R.id.layoutDueDatePicker).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CustomDatePicker customDatePicker;
+                customDatePicker = new CustomDatePicker();
+                customDatePicker.show(getSupportFragmentManager(), "DATE PICK");
             }
         });
 
@@ -718,9 +758,19 @@ public class CreateTaskActivity extends AppCompatActivity implements TableSubTas
 
     @Override
     public void onTableSubTaskClicked(TableSubTask tableTask, int position) {
-        // TODO: 20/06/2022
         Log.d("SUB_TASK", "Editing:" + tableTask.getStatus());
         subTaskListAdapter.updateSubtask(position, CreateTaskActivity.this);
 
+    }
+
+    @Override
+    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+        this.dueDatePicker = datePicker;
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth());
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, MMM d, yyyy");
+        String dateTime = dateFormat.format(calendar.getTime());
+        tvDueDate.setText(dateTime);
     }
 }
