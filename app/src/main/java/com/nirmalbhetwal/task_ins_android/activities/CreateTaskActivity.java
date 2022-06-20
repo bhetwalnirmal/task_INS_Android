@@ -172,6 +172,7 @@ public class CreateTaskActivity extends AppCompatActivity implements DatePickerD
         inputTaskDesc.setText(alreadyAvailableTableTask.getTaskText());
         inputTaskCat.setText(alreadyAvailableTableTask.getCategory());
         addUpdateButton.setText("Update Task");
+        findViewById(R.id.imageSave).setVisibility(View.VISIBLE);
         findViewById(R.id.layoutStatus).setVisibility(View.VISIBLE);
         textCreateDateTime.setText(alreadyAvailableTableTask.getCreateDateTime());
         if (alreadyAvailableTableTask.getImagePath() != null && !alreadyAvailableTableTask.getImagePath().trim().isEmpty()) {
