@@ -758,6 +758,7 @@ public class CreateTaskActivity extends AppCompatActivity implements DatePickerD
 
     @Override
     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+        // set datepicker after clicking the user clicks the picker
         this.dueDatePicker = datePicker;
         Calendar calendar = Calendar.getInstance();
         calendar.set(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth());
