@@ -767,6 +767,7 @@ public class CreateTaskActivity extends AppCompatActivity implements DatePickerD
 
         // create a simple date format
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, MMM d, yyyy");
+        // store the time in string by formatting the date
         String dateTime = dateFormat.format(calendar.getTime());
         tvDueDate.setText(dateTime);
     }
