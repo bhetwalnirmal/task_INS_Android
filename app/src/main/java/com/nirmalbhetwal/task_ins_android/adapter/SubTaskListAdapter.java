@@ -62,6 +62,15 @@ public class SubTaskListAdapter extends RecyclerView.Adapter<SubTaskListAdapter.
                 tableSubTaskListeners.onTableSubTaskClicked(subtask, position);
             }
         });
+        holder.isCompleted.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("SUB_TASK", "Subtask edit was called");
+                TableSubTask subtask = tablesSubTasks.get(position);
+                //subtask.setStatus(subtask.getStatus() == 1? 0:1 );
+                tableSubTaskListeners.onTableSubTaskClicked(subtask, position);
+            }
+        });
     }
 
     @Override
