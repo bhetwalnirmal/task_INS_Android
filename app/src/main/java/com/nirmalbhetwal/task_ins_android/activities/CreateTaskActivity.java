@@ -711,6 +711,8 @@ public class CreateTaskActivity extends AppCompatActivity implements TableSubTas
     @Override
     public void onTableSubTaskClicked(TableSubTask tableTask, int position) {
         // TODO: 20/06/2022
-        Toast.makeText(getApplicationContext(), position, Toast.LENGTH_SHORT).show();
+        Log.d("SUB_TASK", "Editing:" + tableTask.getStatus());
+        subTaskListAdapter.updateSubtask(position, CreateTaskActivity.this);
+
     }
 }

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.nirmalbhetwal.task_ins_android.R;
+import com.nirmalbhetwal.task_ins_android.activities.CreateTaskActivity;
 import com.nirmalbhetwal.task_ins_android.database.TableTaskDB;
 import com.nirmalbhetwal.task_ins_android.listeners.TableSubTaskListeners;
 import com.nirmalbhetwal.task_ins_android.model.TableSubTask;
@@ -33,7 +35,7 @@ public class SubTaskListAdapter extends RecyclerView.Adapter<SubTaskListAdapter.
     public SubTaskListAdapter(List<TableSubTask> tableSubTasks, TableSubTaskListeners tableSubTaskListeners) {
         this.tablesSubTasks = tableSubTasks;
         this.tableSubTaskListeners = tableSubTaskListeners;
-        tableSubTaskSources = tableSubTasks;
+        tableSubTaskSources = tableSubTaskSources;
     }
 
     @NonNull
@@ -51,12 +53,15 @@ public class SubTaskListAdapter extends RecyclerView.Adapter<SubTaskListAdapter.
     @Override
     public void onBindViewHolder(@NonNull TableSubTaskViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.setTableSubtask(tablesSubTasks.get(position));
-//        holder.layoutSubTask.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                tableSubTaskListeners.onTableSubTaskClicked(tablesSubTasks.get(position), position);
-//            }
-//        });
+        holder.layoutSubTask.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("SUB_TASK", "Subtask edit was called");
+                TableSubTask subtask = tablesSubTasks.get(position);
+                //subtask.setStatus(subtask.getStatus() == 1? 0:1 );
+                tableSubTaskListeners.onTableSubTaskClicked(subtask, position);
+            }
+        });
     }
 
     @Override
@@ -79,13 +84,14 @@ public class SubTaskListAdapter extends RecyclerView.Adapter<SubTaskListAdapter.
             super(itemView);
             textSubCategory = itemView.findViewById(R.id.subTaskTitle);
             isCompleted = itemView.findViewById(R.id.isCompleted);
-            layoutSubTask = itemView.findViewById(R.id.layoutAddSubTask);
+            layoutSubTask = itemView.findViewById(R.id.layoutSubtask);
         }
 
         void setTableSubtask(TableSubTask tableSubTask) {
             textSubCategory.setText(tableSubTask.getTitle());
+            Log.d("SUB_TASK", "" + tableSubTask.getStatus());
             if (tableSubTask.getStatus() == 1){
-                isCompleted.isChecked();
+                isCompleted.setChecked(true);
             }else{
                 isCompleted.setChecked(false);
             }
@@ -126,6 +132,7 @@ public class SubTaskListAdapter extends RecyclerView.Adapter<SubTaskListAdapter.
         class DeleteSubTaskFunc extends AsyncTask<Void, Void, Void> {
             @Override
             protected Void doInBackground(Void... voids) {
+
                 TableTaskDB.getDatabase(context).tableTaskDao()
                         .deleteSubTask(tablesSubTasks.get(position));
                 return null;
@@ -139,6 +146,33 @@ public class SubTaskListAdapter extends RecyclerView.Adapter<SubTaskListAdapter.
             }
         }
         new DeleteSubTaskFunc().execute();
+
+    }
+
+
+    public void updateSubtask(int position, Context context) {
+        TableSubTask tableSubTask = tablesSubTasks.get(position);
+        @SuppressLint("StaticFieldLeak")
+        class UpdateSubTaskFunc extends AsyncTask<Void, Void, Void> {
+            @Override
+            protected Void doInBackground(Void... voids) {
+                tableSubTask.setStatus(tableSubTask.getStatus() == 1 ? 0 : 1);
+                Log.d("SUB_TASK", "Editing:" + tableSubTask.getStatus());
+                TableTaskDB.getDatabase(context).tableTaskDao()
+                        .insertSubTaskTable(tableSubTask);
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void unused) {
+                super.onPostExecute(unused);
+                tablesSubTasks.remove(tableSubTask);
+                //tableSubTask.setStatus(tableSubTask.getStatus() == 1 ? 0 : 1);
+                tablesSubTasks.add(position, tableSubTask);
+                notifyDataSetChanged();
+            }
+        }
+        new UpdateSubTaskFunc().execute();
 
     }
 
