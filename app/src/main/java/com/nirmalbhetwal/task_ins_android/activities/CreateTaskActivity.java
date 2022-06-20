@@ -238,7 +238,7 @@ public class CreateTaskActivity extends AppCompatActivity implements TableSubTas
 
         CheckBox taskStatusCheckBox = findViewById(R.id.checkBoxStatus);
 
-        // TODO: 20/06/2022 Verification of Marking ENTIRE TASK AS COMPLETED 
+        // TODO: 20/06/2022 Verification of Marking ENTIRE TASK AS COMPLETED
         taskStatusCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -702,10 +702,8 @@ public class CreateTaskActivity extends AppCompatActivity implements TableSubTas
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
                 final int position = viewHolder.getAdapterPosition();
                 subTaskListAdapter.removeItem(position, CreateTaskActivity.this);
-
             }
         };
-
         ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeToDeleteCallback);
         itemTouchhelper.attachToRecyclerView(tasksRecyclerView);
     }

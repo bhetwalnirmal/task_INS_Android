@@ -130,11 +130,15 @@ public class SubTaskListAdapter extends RecyclerView.Adapter<SubTaskListAdapter.
                         .deleteSubTask(tablesSubTasks.get(position));
                 return null;
             }
+
+            @Override
+            protected void onPostExecute(Void unused) {
+                super.onPostExecute(unused);
+                tablesSubTasks.remove(position);
+                notifyItemRemoved(position);
+            }
         }
         new DeleteSubTaskFunc().execute();
-        tablesSubTasks.remove(position);
-        notifyItemRemoved(position);
-
 
     }
 
